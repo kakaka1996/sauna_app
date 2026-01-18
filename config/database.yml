@@ -53,11 +53,25 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  adapter: postgresql
-  encoding: unicode
-  # メインのデータベース接続
-  url: <%= ENV["DATABASE_URL"] %>
-  # Solid Cable (Action Cable) 用の接続設定を追記
+  primary:
+    adapter: postgresql
+    encoding: unicode
+    url: <%= ENV["DATABASE_URL"] %>
+
   cable:
     adapter: postgresql
+    encoding: unicode
     url: <%= ENV["DATABASE_URL"] %>
+    migrations_paths: db/cable_migrate
+
+  cache:
+    adapter: postgresql
+    encoding: unicode
+    url: <%= ENV["DATABASE_URL"] %>
+    migrations_paths: db/cache_migrate
+
+  queue:
+    adapter: postgresql
+    encoding: unicode
+    url: <%= ENV["DATABASE_URL"] %>
+    migrations_paths: db/queue_migrate
