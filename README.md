@@ -53,7 +53,7 @@ MVPリリース
 
 使用する技術スタック 使用するフレームワーク（例：使用するフレームワークのバージョン情報等） Ruby_on_rails(8.1.1)
 
-データベース（MySQL / PostgreSQLなど） MySQL
+データベース（MySQL / PostgreSQLなど） Postgle 
 
 デプロイ先（Heroku / Renderなど） Render
 

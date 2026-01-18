@@ -29,6 +29,7 @@
 !/storage/.keep
 /tmp/storage/*
 !/tmp/storage/.keep
+postgres_data
 
 # Ignore assets.
 /node_modules/
