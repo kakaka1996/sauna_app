@@ -53,11 +53,11 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
   adapter: postgresql
   encoding: unicode
-  url: <%= ENV['DATABASE_URL'] %>
+  # メインのデータベース接続
+  url: <%= ENV["DATABASE_URL"] %>
+  # Solid Cable (Action Cable) 用の接続設定を追記
   cable:
-    <<: *default
+    adapter: postgresql
     url: <%= ENV["DATABASE_URL"] %>
-  
