@@ -56,8 +56,8 @@ production:
   primary: &primary_production
     <<: *default
     database: sauna_app_production
-    username: sauna_app
-    password: <%= ENV["SAUNA_APP_DATABASE_PASSWORD"] %>
+    username: root
+    password: <%= ENV.fetch("DB_PASSWORD") { "" } %>
   cache:
     <<: *primary_production
     database: sauna_app_production_cache
