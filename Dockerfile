@@ -9,6 +9,13 @@
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version
 ARG RUBY_VERSION=3.3.6
 FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+    build-essential \
+    pkg-config \
+    libpq-dev \
+    git \
+    nodejs
 
 # Rails app lives here
 WORKDIR /rails
