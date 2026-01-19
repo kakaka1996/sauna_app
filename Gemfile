@@ -43,6 +43,10 @@ gem "thruster", require: false
   # cssフレームワークの導入
   gem "tailwindcss-rails", "~> 3.3.1"
 
+  #google_map_apiの導入
+  gem 'gmaps4rails'
+  gem 'geocoder'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
