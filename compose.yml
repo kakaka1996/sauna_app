@@ -37,5 +37,5 @@ services:
       - web
 volumes:
   bundle_data:
-  postgresql_data:
+  postgres_data:
   node_modules:
