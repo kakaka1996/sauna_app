@@ -1,5 +1,5 @@
 class TopController < ApplicationController
-  def index
+  def top
     @test = "Hello world"
   end
 end
