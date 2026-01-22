@@ -46,6 +46,7 @@ gem "thruster", require: false
   # google_map_apiの導入
   gem "gmaps4rails"
   gem "geocoder"
+  gem "google_places"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
