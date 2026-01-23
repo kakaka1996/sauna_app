@@ -8,3 +8,5 @@ document.addEventListener("turbo:load", () => {
         initMap();
     }
 });
+
+import { markerEvent, deleteMakers, setMaker} from "searching"
