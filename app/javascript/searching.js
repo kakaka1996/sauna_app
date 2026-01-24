@@ -11,9 +11,9 @@ document.getElementById("search_execution").addEventListener('click', function()
                 if (results[0].geometry){
                     const latlng = results[0].geometry.location;
                     const address = results[0].formatted_address;
-                    bounds.extend(lating);
-                    setMaker(lating);
-                    setInFoW(place, lating, address);
+                    bounds.extend(latlng);
+                    setMarker(latlng);
+                    setInFoW(place, latlng, address);
                     markerEvent();
                 }
             }
@@ -26,11 +26,11 @@ document.getElementById("search_execution").addEventListener('click', function()
     });
 });
 // マーカーのセッティング
-export function setMaker(setplace){
+export function setMarker(setplace){
 // 既存マーカの削除
-    deleteMakers();
+    deleteMarkers();
     const iconUrl = '"https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";'
-    marker = new google.maps.Maker({
+    marker = new google.maps.Marker({
         position: setplace,
         map: map,
         icon: iconUrl
@@ -39,8 +39,8 @@ export function setMaker(setplace){
 
 
 // マーカー削除
-export function deleteMakers() {
-    if(maker != null){
+export function deleteMarkers() {
+    if(marker != null){
         marker.setMap(null);
     }
     marker = null;
@@ -51,4 +51,3 @@ export function markerEvent() {
         infoWindow.open(map, marker);
     });
 }
-
