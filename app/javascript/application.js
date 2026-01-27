@@ -1,9 +1,11 @@
 import { initMap } from "map"
 import { initSearching } from "searching"
+import { getCurrentLocationMarker } from "get_current_location"
 
 // コンソールや外部APIから見えるように「窓口」を作る
 window.initMap = initMap;
 window.initSearching = initSearching;
+window.getCurrentLocationMarker = getCurrentLocationMarker
 
 const startGMap = () => {
     const mapElement = document.getElementById("map");
@@ -14,6 +16,7 @@ const startGMap = () => {
         console.log("--- 準備完了。地図を起動します ---");
         initMap();
         initSearching();
+        getCurrentLocationMarker();
     } else {
         // まだ準備ができていない場合は、0.2秒後に再試行
         console.log("--- Google Maps APIを待機中... ---");

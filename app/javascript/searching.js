@@ -55,39 +55,3 @@ export function markerEvent(map, name, address) {
         infoWindow.open(map, marker);
     });
 }
-
-//                 // 既存マーカーを消して新しく立てる
-//                 if (marker) marker.setMap(null);
-//                 marker = new google.maps.Marker({
-//                     position: latlng,
-//                     map: map
-//                 });
-//             }else{
-//                 alert("検索に失敗しました");
-//             }
-//         });
-//     });
-// }
-
-// export function setMarker(setplace, map){
-//     deleteMarkers();
-//     marker = new google.map.Marker({
-//         position: setplace,
-//         map: map,
-//         iconUrl: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"'
-//     });
-// }
-
-// export function deleteMarkers(){
-//     if(marker != null){
-//         marker.setMap(null);
-//     }
-//     marker = null;
-// }
-
-// export function markerEvent(map){
-//     if (!marker) return;
-//     marker.addListener('click', function(){
-//         infoWindow.open(map, marker);
-//     });
-// }
