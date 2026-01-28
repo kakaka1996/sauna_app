@@ -1,43 +1,36 @@
 import { getMap } from "map"
 
-// ボタン操作で現在地取得
-const currentLocationButton = document.getElementById('get_current_location');
-currentLocationButton.addEventListener('click', getCurrentLocationMarker);
-
-// 現在地を取得してからマーカーを追加する
-
 let currentLocationMarker;
-const infoWindow = new google.maps.InfoWindow();
+let infoWindow;
 
-
-
-export function getCurrentLocationMarker(){
+// initCurrentLocation は削除します。このツール関数だけを残してください。
+export function getCurrentLocationMarker() {
     const map = getMap();
-    if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(function (position){
-        const currentLatLng ={
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-        };
-
-    if(currentLocationMarker){
-        currentLocationMarker.setMap(null);
+    if (!infoWindow) {
+        infoWindow = new google.maps.InfoWindow();
     }
-    currentLocationMarker = new google.maps.Marker({
-        position: currentLatLng,
-        map: map,
-        title: "現在地"
-    });
 
-    currentLocationMarker.addListener('click', function(){
-        infoWindow.setContent(
-            `<strong>現在地<strong></strong>`
+    return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const currentLatLng = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                if (currentLocationMarker) {
+                    currentLocationMarker.setMap(null);
+                }
+                currentLocationMarker = new google.maps.Marker({
+                    position: currentLatLng,
+                    map: map,
+                    title: "現在地"
+                });
+
+                // マーカークリック時のイベント設定などは今のままでOK
+                resolve(currentLatLng);
+            },
+            (error) => reject(error)
         );
-        infoWindow.open(map, currentLocationMarker);
     });
-    map.setCenter(currentLatLng);
-    });
-    }else{
-        alert("この画面では位置情報が利用できません");
-    }
 }
