@@ -9,3 +9,4 @@ pin "map"
 pin "searching"
 pin "get_current_location"
 pin "route_search"
+pin

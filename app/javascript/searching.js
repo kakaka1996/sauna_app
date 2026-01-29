@@ -25,6 +25,10 @@ export function initSearching() {
                 map.setCenter(latlng);
                 setMarker(latlng, map);
                 markerEvent(map, inputName, address);
+                sePlaces({
+                    lat: spot.latitude,
+                    lng: spot.longitude
+                });
             } else {
                 alert("検索に失敗しました: " + status);
             }
