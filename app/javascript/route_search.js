@@ -8,7 +8,6 @@ let directionRenderer;
 export function initRouteSearch() {
     const routeBtn = document.getElementById("route_search");
     if (routeBtn) {
-        // 二重にイベントが登録されないよう、一度消すかチェックするのが安全です
         routeBtn.removeEventListener("click", culRoute); 
         routeBtn.addEventListener("click", culRoute);
     }
@@ -35,7 +34,6 @@ export async function culRoute(){
             origin: origin,
             destination: destination,
             travelMode: 'DRIVING',
-            
             avoidTolls: true
         }, (response, status) => {
         console.log(response);
