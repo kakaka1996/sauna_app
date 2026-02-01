@@ -8,7 +8,14 @@ export function initMap() {
     map = new google.maps.Map(target, {
         center: { lat: 35.412715, lng: 136.771715 }, // 岐阜
         zoom: 15,
-        mapId: "DEMO_MAP_ID"
+        styles: [
+            {
+                featureType: "poi.business", // お店などのスポットを指定
+                elementType: "labels.icon",   // そのアイコンを指定
+                stylers: [{ visibility: "off" }]
+            }
+        ] 
+        // mapId: "DEMO_MAP_ID"
     });
 }
 export function getMap() { return map; }

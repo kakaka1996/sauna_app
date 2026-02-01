@@ -3,7 +3,6 @@ import { getMap } from "map"
 let currentLocationMarker;
 let infoWindow;
 
-// initCurrentLocation は削除します。このツール関数だけを残してください。
 export function getCurrentLocationMarker() {
     const map = getMap();
     if (!infoWindow) {

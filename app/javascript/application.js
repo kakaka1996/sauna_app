@@ -1,6 +1,5 @@
 import { initMap } from "map"
 import { initSearching } from "searching"
-
 import { initRouteSearch} from "route_search"
 
 const startGMap = () => {
