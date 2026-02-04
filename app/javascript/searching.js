@@ -5,7 +5,9 @@ let destinationLatLng = null;
 let marker = null;
 let infoWindow = null;
 
-export function initSearching() {
+export async function initSearching() {
+    const {PlacesService} = await google.maps.importLibrary("places")
+    service = new PlacesService(map)
     const searchBtn = document.getElementById("search_execution");
     const map = getMap();
     if (!infoWindow) {
