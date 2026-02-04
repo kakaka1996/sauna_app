@@ -5,27 +5,28 @@ let destinationLatLng = null;
 let marker = null;
 let infoWindow = null;
 
-export function initSearching() {
-    const searchBtn = document.getElementById("search_execution");
+ 
+export async function initSearching() {
+    const {PlacesService} = await google.maps.importLibrary("places")
     const map = getMap();
-    if (!infoWindow) {
-        infoWindow = new google.maps.InfoWindow();
-    }
+    // 
+    const searchBtn = document.getElementById("search_execution");
+     infoWindow = new google.maps.InfoWindow();
+
     // 1. PlacesService を準備
-    const service = new google.maps.places.PlacesService(map);
+    const service = new PlacesService(map);
 
     searchBtn.addEventListener('click', () => {
         const inputName = document.getElementById('place_search').value;
         if (!inputName) return;
 
-        // 2. 住所検索ではなく「場所検索」を実行
         const request = {
             query: inputName,
-            fields: ['name', 'geometry', 'place_id'], // place_id を取得するのがポイント
+            fields: ['name', 'geometry', 'place_id'], 
         };
 
         service.findPlaceFromQuery(request, (results, status) => {
-            if (status === google.maps.places.PlacesServiceStatus.OK && results[0]) {
+            if (status === google.maps.places.PlacesServiceStatus.OK ) {
                 const place = results[0];
                 const latlng = place.geometry.location;
 
@@ -90,10 +91,6 @@ export function setMarker(latlng, map, placeid) {
     });
 }
 
-// これが route_search.js から呼ばれている関数です！
 export function getDestination() {
     return destinationLatLng;
 }
-//  website, opening_hours,
-//           photos
-/* <br>${website}<br>${opening_hours}<br>${photos} */
