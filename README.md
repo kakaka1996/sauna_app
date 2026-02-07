@@ -59,6 +59,7 @@ MVPリリース
 
 使用予定のライブラリ
 tailwindcss
+devise
 simple-calender(記録作成時のカレンダー機能)
 rails -18n 言語化
 carrywave(画像アップロード)
