@@ -2,9 +2,8 @@
     <div class="max-w-7xl mx-auto px-4 flex justify-between items-baseline  text-white ">
         <%= link_to "アプリ名", root_path, class: "text-3xl hover:font-bold" %>
         <div class="inline-block gap-4">
-<%# ログインメソッドを作成した際にルート設定をすること %>
-            <%= link_to "新規登録", "/", class: "hover:font-bold" %>
-            <%= link_to "ログイン", "/",  class: "hover:font-bold" %>
+            <%= link_to "新規登録", new_user_registration_path, class: "hover:font-bold" %>
+            <%= link_to "ログイン", new_user_session_path,  class: "hover:font-bold" %>
         </div>
     </div>
 </header>
