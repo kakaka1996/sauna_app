@@ -1,3 +1,4 @@
+import "@hotwired/turbo-rails"
 import { initMap } from "map"
 import { initSearching } from "searching"
 import { initRouteSearch} from "route_search"
