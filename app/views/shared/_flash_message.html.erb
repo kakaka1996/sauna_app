@@ -1,0 +1,12 @@
+<% flash.each do |key, value| %>
+  <% classes = {
+    "notice" => "bg-green-100 border-green-500 text-green-700",
+    "alert" => "bg-red-100 border-red-500 text-red-700",
+    "error"  => "bg-red-100 border-red-500 text-red-700"    # エラー：赤（もしあれば）
+    }
+    bg_color = classes[key]
+  %>
+  <div class="<%= bg_color %> px-6 py-4 border-0 rounded relative mb-4">
+    <%= value %>
+  </div>
+<% end %>
