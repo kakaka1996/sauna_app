@@ -1,9 +1,8 @@
 <h2  class="flex flex-col place-items-center mt-20 font-bold">アカウント登録</h2>
 
 <div class="flex flex-col items-center mx-auto">
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
-  <% puts "ここまできてる？" %>
 </div>
 
 <div class="container flex flex-col items-center mx-auto">

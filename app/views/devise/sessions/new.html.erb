@@ -1,10 +1,10 @@
 <h2 class="flex flex-col place-items-center mt-20 font-bold">ログイン</h2>
 
 <div class="flex flex-col items-center mx-auto">
-<%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f| %>
  <%= render "devise/shared/error_messages", resource: resource %>
 </div>
-  
+
 <div class="container flex flex-col items-center mx-auto">
   <div class="field mb-5 ">
     <%= f.label :email, 'メールアドレス' %><br />
@@ -30,4 +30,4 @@
 
 </div>
 
-<%# <%= render "devise/shared/links" %> %>
+<%# <%= render "devise/shared/links" %>

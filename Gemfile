@@ -50,7 +50,7 @@ gem "thruster", require: false
 
   # ログイン機能の導入(そのうち他SNSも採用予定)
   gem "devise", "~> 4.9"
-  gem 'devise-i18n' #その他画面のi18nは本リリースで
+  gem "devise-i18n" # その他画面のi18nは本リリースで
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
