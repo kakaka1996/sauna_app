@@ -1,0 +1,12 @@
+
+<% if user_signed_in? %>
+    <aside class="w-40 bg-black text-white p-6 min-h-screen flex-shrink-0">
+        <nav class="flex flex-col gap-4">
+            <%= link_to "検索", "/"%>
+            <%= link_to "記録作成", "/"%>
+            <%# 以下は本リリース実装予定 %>
+            <%# <%= link_to "投稿", "/" %>
+            <%# <%= link_to "お気に入り", "/"%>
+        </nav>
+    </aside>
+<% end %>
