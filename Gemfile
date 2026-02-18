@@ -49,7 +49,7 @@ gem "thruster", require: false
   gem "google_places"
 
   # ログイン機能の導入(そのうち他SNSも採用予定)
-  gem "devise", "~> 4.9"
+  gem "devise", "~> 5.0"
   gem "devise-i18n" # その他画面のi18nは本リリースで
 
 group :development, :test do
