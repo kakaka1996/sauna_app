@@ -26,18 +26,21 @@
   </head>
   <body class="flex flex-col min-h-screen">
     <%= render 'shared/header' %>
-  
-  <div class="flex flex-1">
-    <% if user_signed_in? %>
-      <%= render 'shared/side_bar' %>
-    <% end %>
-   
-    <main class="flex-1 flex flex-col">
-      <%= render 'shared/flash_message' %>
-      <%= yield %>
-    </main>
 
-  </div>
-  <%= render 'shared/footer' %>
+    <% if user_signed_in? %>
+      <div class="flex flex-1 overflow-hidden">
+        <%= render 'shared/side_bar' %>
+      <main class="flex-1 overflow-y-auto">
+        
+        <%= render 'shared/flash_message' %>
+        <%= yield %>
+      </main>
+      </div>
+    <% else %>
+      <main class="flex-grow">
+        <%= yield %>
+      </main>
+    <% end %>
+    <%= render 'shared/footer' %>
   </body>
 </html>
