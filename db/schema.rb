@@ -10,9 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_07_024643) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_18_043606) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "sauna_logs", force: :cascade do |t|
+    t.string "comment", null: false
+    t.datetime "created_at", null: false
+    t.integer "crowding", null: false
+    t.datetime "experience_date", null: false
+    t.string "facility", null: false
+    t.integer "satisfaction", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sauna_meals", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "restaurant", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sauna_sets", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "heat_temperature", null: false
+    t.integer "heat_time", null: false
+    t.integer "rest_time", null: false
+    t.datetime "updated_at", null: false
+    t.integer "water_bath_temperature", null: false
+    t.integer "water_bath_time", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
