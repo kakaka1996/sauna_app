@@ -1,0 +1,10 @@
+<% form_with model: @sauna_log do |f|%>
+    <%= f.label :facility, 'サウナ施設名' %>
+    <%= f.text_field :facility %>
+
+    <%= f.label :experience_date, '日時' %>
+    <%= f.date_field :experience_date %>
+
+    <%= f.label :crowding, '混雑度' %>
+    <%= f.range_field(:discount, in: 1..5) %>
+<% end %>
