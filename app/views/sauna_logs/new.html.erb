@@ -1,4 +1,10 @@
+
 <%# 親modelフォーム %>
+
+
+<div class="flex flex-col items-center mx-auto">
+
+
 <%= form_with model: @sauna_log do |f|%>
     <%= f.label :facility, 'サウナ施設名' %>
     <%= f.text_field :facility, class: "border-2 border-black mt-3" %>
