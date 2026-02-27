@@ -1,3 +1,4 @@
+<%# 親modelフォーム %>
 <%= form_with model: @sauna_log do |f|%>
     <%= f.label :facility, 'サウナ施設名' %>
     <%= f.text_field :facility, class: "border-2 border-black mt-3" %>
@@ -5,8 +6,29 @@
     <%= f.label :experience_date, '日時' %>
     <%= f.date_field :experience_date %>
 
+<%# 子model(sauna_set)フォーム %>
+        <%= f.fields_for :sauna_set do |s|%>
+            <%= s.label :heat_time, 'サウナ時間' %>
+            <%= s.number_field :heat_time, class: "border-2 border-black mt-3" %>
+
+            <%= s.label :heat_temperature, 'サウナ温度' %>
+            <%= s.number_field :heat_temperature, class: "border-2 border-black mt-3" %>
+
+            <%= s.label :water_bath_time, '水風呂時間' %>
+            <%= s.number_field :water_bath_time, class: "border-2 border-black mt-3" %>
+
+            <%= s.label :water_bath_temperature, '水風呂温度' %>
+            <%= s.number_field :water_bath_temperature, class: "border-2 border-black mt-3" %>
+
+            <%= s.label :rest_time, '外気浴時間' %>
+            <%= s.number_field :rest_time, class: "border-2 border-black mt-3" %>
+        <% end %>
+
+<%# 子model(sauna_meal)フォーム %>
+        <%= f.fields_for :sauna_meal do |m| %>
+            <%= m.label :restaurant, 'サウナ飯' %>
+            <%= m.text_field :restaurant, class: "border-2 border-black mt-3" %>
+        <% end %>
     <%= f.label :crowding, '混雑度' %>
     <%= f.range_field(:discount, in: 1..5) %>
 <% end %>
-
-<p>testtest</p>
