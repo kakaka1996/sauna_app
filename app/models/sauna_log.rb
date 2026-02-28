@@ -12,4 +12,5 @@ class SaunaLog < ApplicationRecord
   has_many :sauna_sets, dependent: :destroy
     accepts_nested_attributes_for :sauna_sets, allow_destroy: true, reject_if: :all_blank, limit: 4
   has_many :sauna_meals, dependent: :destroy
+     accepts_nested_attributes_for :sauna_meals, allow_destroy: true, reject_if: :all_blank, limit: 4
 end

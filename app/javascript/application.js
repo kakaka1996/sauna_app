@@ -2,6 +2,7 @@ import "@hotwired/turbo-rails"
 import { initMap } from "map"
 import { initSearching } from "searching"
 import { initRouteSearch} from "route_search"
+import { addSaunaForm, addSaunaMealForm } from "log_create_button"
 
 const startGMap = () => {
     const mapElement = document.getElementById("map");
@@ -23,3 +24,11 @@ if (document.readyState !== 'loading') {
     startGMap();
 }
 
+document.addEventListener("turbo:load", () => {
+  addSaunaForm();
+
+})
+document.addEventListener("turbo:load", () => {
+
+  addSaunaMealForm();
+})

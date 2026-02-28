@@ -1,40 +1,84 @@
+<div class="max-w-2xl mx-auto p-4 flex flex-col items-center">
+    <h1 class="text-2xl font-bold mb-6">サウナ記録</h1>
 
-<%# 親modelフォーム %>
+    <%# 親modelフォーム %>
+    <%= form_with model: @post_sauna_log, class: "w-full space-y-8" do |f|%>
+    
+        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 w-full space-y-4">
+            <div>
+                <%= f.label :facility, 'サウナ施設名', class: "block font-medium text-gray-700" %>
+                <%= f.text_field :facility, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1" %>
+            </div>
+            <div>
+                <%= f.label :experience_date, '日時', class: "block font-medium text-gray-700" %>
+                <%= f.date_field :experience_date, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1" %>
+            </div>
 
+            <div id="set_form" class="w-full space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold">サウナ記録</h2>
+                    <div class="space-x-2">
 
-<div class="flex flex-col items-center mx-auto">
+                        <% if @post_sauna_log.new_record? %>
+                            <button id="add-sauna_form" type="button" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition">＋セット追加</button>
+                            <button id="hide-sauna_form" type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">ー削除</button>
+                        <% end %>
+                    </div>
+                </div>
+                <%# 子model(sauna_set)フォーム %>
+        
+                <%= f.fields_for :sauna_sets do |s|%>
+                    <div class="sauna-set bg-blue-50 p-6 rounded-lg border border-blue-100 space-y-3" style="display: <%= 'none' if @post_sauna_log.new_record? %>;">
+                        <h3 class="font-bold text-blue-800"><span class="set-number"></span> 周目</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="sauna_set_field">
+                                <%= s.label :heat_time, 'サウナ時間', class: "text-sm text-gray-600" %>
+                                <%= s.number_field :heat_time, class: "w-full border-gray-300 rounded-md" %>
+                            </div>
 
+                            <div class="sauna_set_field">
+                                <%= s.label :heat_temperature, 'サウナ温度', class: "text-sm text-gray-600" %>
+                                <%= s.number_field :heat_temperature, class: "w-full border-gray-300 rounded-md" %>
+                            </div>
 
-<%= form_with model: @sauna_log do |f|%>
-    <%= f.label :facility, 'サウナ施設名' %>
-    <%= f.text_field :facility, class: "border-2 border-black mt-3" %>
+                            <div class="sauna_set_field">
+                                <%= s.label :water_bath_time, '水風呂時間', class: "text-sm text-gray-600" %>
+                                <%= s.number_field :water_bath_time, class: "w-full border-gray-300 rounded-md" %>
+                            </div>
 
-    <%= f.label :experience_date, '日時' %>
-    <%= f.date_field :experience_date %>
+                            <div class="sauna_set_field">
+                                <%= s.label :water_bath_temperature, '水風呂温度', class: "text-sm text-gray-600" %>
+                                <%= s.number_field :water_bath_temperature,  class: "w-full border-gray-300 rounded-md" %>
+                            </div>
 
-<%# 子model(sauna_set)フォーム %>
-        <%= f.fields_for :sauna_set do |s|%>
-            <%= s.label :heat_time, 'サウナ時間' %>
-            <%= s.number_field :heat_time, class: "border-2 border-black mt-3" %>
-
-            <%= s.label :heat_temperature, 'サウナ温度' %>
-            <%= s.number_field :heat_temperature, class: "border-2 border-black mt-3" %>
-
-            <%= s.label :water_bath_time, '水風呂時間' %>
-            <%= s.number_field :water_bath_time, class: "border-2 border-black mt-3" %>
-
-            <%= s.label :water_bath_temperature, '水風呂温度' %>
-            <%= s.number_field :water_bath_temperature, class: "border-2 border-black mt-3" %>
-
-            <%= s.label :rest_time, '外気浴時間' %>
-            <%= s.number_field :rest_time, class: "border-2 border-black mt-3" %>
-        <% end %>
-
+                            <div class="sauna_set_field">
+                                <%= s.label :rest_time, '外気浴時間', class: "text-sm text-gray-600" %>
+                                <%= s.number_field :rest_time, class: "w-full border-gray-300 rounded-md" %>
+                            </div>
+                        </div>
+                <% end %>
+            </div>
+            <div class="pt-6">
+    <% if @post_sauna_log.new_record? %>
+            <button id="add_sauna_meal_form" type="button">サウナ飯記録の追加はこちらから</button>
+            <button id ="hide_sauna_meal_form" type= "button" class="btn btn-secondary">非表示</button>
+    <% end %>
 <%# 子model(sauna_meal)フォーム %>
-        <%= f.fields_for :sauna_meal do |m| %>
-            <%= m.label :restaurant, 'サウナ飯' %>
-            <%= m.text_field :restaurant, class: "border-2 border-black mt-3" %>
+    <div id="meal_form">
+        <%= f.fields_for :sauna_meals do |m| %>
+            <div class="sauna_meal_log" style="display: <%= 'none' if @post_sauna_log.new_record? %>;">
+                <%= m.label :restaurant, 'サウナ飯' %>
+                <%= m.text_field :restaurant, class: "border-2 border-black mt-3" %>
+            </div>
         <% end %>
+    </div>
     <%= f.label :crowding, '混雑度' %>
-    <%= f.range_field(:discount, in: 1..5) %>
+    <%= f.range_field(:crowding, in: 1..5) %>
+
+    <%= f.label :comment, '感想' %>
+    <%= f.text_field :comment, class: "border-2 border-black mt-3" %>
+    <%= f.submit '新規作成' %>
 <% end %>
+</div>
+</div>
+</div>

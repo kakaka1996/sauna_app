@@ -6,7 +6,7 @@ class CreateSaunaSets < ActiveRecord::Migration[8.1]
       t.integer :water_bath_time, null: false
       t.integer :water_bath_temperature, null: false
       t.integer :rest_time, null: false
-      t.references :SaunaLog, null: false, foreign_key: true
+      t.references :sauna_log, null: false, foreign_key: true
       t.timestamps
     end
   end

@@ -6,6 +6,7 @@ class CreateSaunaLogs < ActiveRecord::Migration[8.1]
       t.integer :crowding, null: false
       t.string :comment, null: false
       t.integer :satisfaction, null: false
+      t.references :user, null: false, foreign_key: true
       t.timestamps
     end
   end
