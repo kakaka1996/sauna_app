@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_18_043606) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_28_140651) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -27,7 +27,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_043606) do
   create_table "sauna_meals", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "restaurant", null: false
+    t.bigint "sauna_log_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["sauna_log_id"], name: "index_sauna_meals_on_sauna_log_id"
   end
 
   create_table "sauna_sets", force: :cascade do |t|
@@ -35,9 +37,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_043606) do
     t.integer "heat_temperature", null: false
     t.integer "heat_time", null: false
     t.integer "rest_time", null: false
+    t.bigint "sauna_log_id", null: false
     t.datetime "updated_at", null: false
     t.integer "water_bath_temperature", null: false
     t.integer "water_bath_time", null: false
+    t.index ["sauna_log_id"], name: "index_sauna_sets_on_sauna_log_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -52,4 +56,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_18_043606) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "sauna_meals", "sauna_logs"
+  add_foreign_key "sauna_sets", "sauna_logs"
 end
