@@ -5,7 +5,8 @@ class SaunaLogsController < ApplicationController
 
   def new
     @post_sauna_log = SaunaLog.new
-    4.times {@post_sauna_log.sauna_sets.build}
+    4.times { @post_sauna_log.sauna_sets.build }
+    1.times { @post_sauna_log.sauna_meals.build }
   end
 
   def create
