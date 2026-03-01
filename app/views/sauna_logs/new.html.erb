@@ -1,84 +1,107 @@
+<% @post_sauna_log.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
 <div class="max-w-2xl mx-auto p-4 flex flex-col items-center">
     <h1 class="text-2xl font-bold mb-6">サウナ記録</h1>
 
     <%# 親modelフォーム %>
-    <%= form_with model: @post_sauna_log, class: "w-full space-y-8" do |f|%>
+    <%= form_with model: @post_sauna_log, class: "  w-full space-y-8" do |f|%>
     
-        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 w-full space-y-4">
+        <div class="bg-blue-50 p-6 rounded-lg shadow-sm border border-black-200 w-full space-y-4">
+            <div class="flex flex-wrap gap-4 mb-4 w-full">
             <div>
-                <%= f.label :facility, 'サウナ施設名', class: "block font-medium text-gray-700" %>
-                <%= f.text_field :facility, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1" %>
+                <%= f.label :experience_date, '日時', class: "block font-bold text-gray-700" %>
+                <%= f.date_field :experience_date, class: "w-full border-2 border-black rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none mt-1" %>
             </div>
+
             <div>
-                <%= f.label :experience_date, '日時', class: "block font-medium text-gray-700" %>
-                <%= f.date_field :experience_date, class: "w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1" %>
+                <%= f.label :facility, 'サウナ施設名', class: "font-bold mb-1 text-sm font-semibold text-gray-700 mb-1" %>
+                <%= f.text_field :facility, class: "w-full border-2 border-black rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none mt-1" %>
+            </div>
             </div>
 
             <div id="set_form" class="w-full space-y-4">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-lg font-semibold">サウナ記録</h2>
+                    <h2 class="text-lg font-bold">サウナ記録</h2>
                     <div class="space-x-2">
-
-                        <% if @post_sauna_log.new_record? %>
-                            <button id="add-sauna_form" type="button" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition">＋セット追加</button>
-                            <button id="hide-sauna_form" type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">ー削除</button>
-                        <% end %>
+                            <button id="add-sauna_form" type="button" class="px-3 py-2  bg-white text-gray-700 font-bold rounded-xl shadow-md hover:shadow-lg active:scale-95 active:shadow-inner transition-all duration-150 ease-in-out border-2 border-black-800">＋セット追加</button>
+                            <button id="hide-sauna_form" type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">ー非表示</button>
                     </div>
                 </div>
                 <%# 子model(sauna_set)フォーム %>
         
                 <%= f.fields_for :sauna_sets do |s|%>
-                    <div class="sauna-set bg-blue-50 p-6 rounded-lg border border-blue-100 space-y-3" style="display: <%= 'none' if @post_sauna_log.new_record? %>;">
+                    <div class="sauna-set bg-blue-200 p-6 rounded-lg border border-blue-500 space-y-3" style="display: <%= 'none' if @post_sauna_log.new_record? %>;">
                         <h3 class="font-bold text-blue-800"><span class="set-number"></span> 周目</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="sauna_set_field">
                                 <%= s.label :heat_time, 'サウナ時間', class: "text-sm text-gray-600" %>
-                                <%= s.number_field :heat_time, class: "w-full border-gray-300 rounded-md" %>
+                                <%= s.number_field :heat_time, min:1, max:100, step: 1, class: "wheel-input w-24 border-gray-300 rounded-md" %><span class="font-bold text-gray-700">分</span>
                             </div>
 
                             <div class="sauna_set_field">
                                 <%= s.label :heat_temperature, 'サウナ温度', class: "text-sm text-gray-600" %>
-                                <%= s.number_field :heat_temperature, class: "w-full border-gray-300 rounded-md" %>
+                                <%= s.number_field :heat_temperature, class: "w-24 border-gray-300 rounded-md" %><span class="font-bold text-gray-700">℃</span>
                             </div>
 
                             <div class="sauna_set_field">
                                 <%= s.label :water_bath_time, '水風呂時間', class: "text-sm text-gray-600" %>
-                                <%= s.number_field :water_bath_time, class: "w-full border-gray-300 rounded-md" %>
+                                <%= s.number_field :water_bath_time, class: "w-24 border-gray-300 rounded-md" %><span class="font-bold text-gray-700">分</span>
                             </div>
 
                             <div class="sauna_set_field">
                                 <%= s.label :water_bath_temperature, '水風呂温度', class: "text-sm text-gray-600" %>
-                                <%= s.number_field :water_bath_temperature,  class: "w-full border-gray-300 rounded-md" %>
+                                <%= s.number_field :water_bath_temperature,  class: "w-24 border-gray-300 rounded-md" %><span class="font-bold text-gray-700">℃</span>
                             </div>
 
                             <div class="sauna_set_field">
                                 <%= s.label :rest_time, '外気浴時間', class: "text-sm text-gray-600" %>
-                                <%= s.number_field :rest_time, class: "w-full border-gray-300 rounded-md" %>
+                                <%= s.number_field :rest_time, class: "w-24 border-gray-300 rounded-md" %><span class="font-bold text-gray-700">分</span>
                             </div>
                         </div>
+                    </div>
                 <% end %>
             </div>
-            <div class="pt-6">
-    <% if @post_sauna_log.new_record? %>
-            <button id="add_sauna_meal_form" type="button">サウナ飯記録の追加はこちらから</button>
-            <button id ="hide_sauna_meal_form" type= "button" class="btn btn-secondary">非表示</button>
-    <% end %>
+            <div class="mt-8 pt-8 border-t-2 border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-gray-800">サウナ飯記録</h2>
+                    <div class="space-x-2">
+                        <button id="add_sauna_meal_form" type="button" class="px-4 py-2 bg-orange-500 text-white font-bold rounded-full shadow-md hover:bg-orange-600 active:scale-95 transition-all">＋ 追加</button>
+                        <button id ="hide_sauna_meal_form" type= "button" class="px-4 py-2 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300 active:scale-95 transition-all">ー非表示</button>
+                    </div>
+                </div>
 <%# 子model(sauna_meal)フォーム %>
-    <div id="meal_form">
+    <div id="meal_form" class="space-y-4">
         <%= f.fields_for :sauna_meals do |m| %>
-            <div class="sauna_meal_log" style="display: <%= 'none' if @post_sauna_log.new_record? %>;">
-                <%= m.label :restaurant, 'サウナ飯' %>
-                <%= m.text_field :restaurant, class: "border-2 border-black mt-3" %>
+            <div class="sauna_meal_log" bg-orange-50 p-6 rounded-lg border-2 border-black" style="display: <%= 'none' if @post_sauna_log.new_record? %>;">
+                <div class="flex flex-col">
+                    <%= m.label :restaurant, 'サウナ飯店名', class: "font-bold mb-1" %>
+                    <%= m.text_field :restaurant, class: "w-full border-2 border-black p-2 rounded-md focus:ring-2 focus:ring-orange-500 outline-none bg-white" %>
+                </div>
             </div>
         <% end %>
     </div>
-    <%= f.label :crowding, '混雑度' %>
-    <%= f.range_field(:crowding, in: 1..5) %>
+</div>
+<div class="mt-8 space-y-6 bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+  <div class="flex flex-col">
+    <%= f.label :crowding, '混雑度（1:空いている 〜 5:混んでいる）', class: "font-bold mb-2" %>
+    <%= f.range_field :crowding, in: 1..5, class: "w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-indigo-600" %>
+    <div class="flex justify-between text-xs font-bold px-1 mt-2">
+      <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+    </div>
+  </div>
 
-    <%= f.label :comment, '感想' %>
-    <%= f.text_field :comment, class: "border-2 border-black mt-3" %>
-    <%= f.submit '新規作成' %>
+  <div class="flex flex-col">
+    <%= f.label :comment, '感想・メモ', class: "font-bold mb-1" %>
+
+    <%= f.text_area :comment, rows: 4, 
+        class: "w-full border-2 border-black p-2 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none bg-white" %>
+  </div>
+</div>
+
+<%# 送信ボタン %>
+<div class="mt-10 pb-10 text-center">
+  <%= f.submit 'サウナ記録を保存する', 
+      class: "w-full md:w-2/3 py-4 bg-green-600 text-white font-extrabold text-xl rounded-full shadow-xl hover:bg-green-700 active:scale-95 cursor-pointer transition-all border-b-4 border-green-800" %>
+</div>
 <% end %>
-</div>
-</div>
-</div>

@@ -14,17 +14,17 @@ class SaunaLogsController < ApplicationController
     if @post_sauna_log.save
       redirect_to new_sauna_log_path(@post_sauna_log), notice: "記録が完了しました"
     else
-
-      render :new, alert: "記録を作成できません"
+      flash.now[:alert] = "記録を作成できませんでした"
+      render :new,  status: :unprocessable_entity
     end
   end
 
 
   def post_sauna_log_params
-    params.require(:post_sauna_log).permit(
+    params.require(:sauna_log).permit(
       :facility, :experience_date, :crowding, :comment, :satisfaction,
       sauna_sets_attributes: [ :id, :heat_time, :heat_temperature, :water_bath_time, :water_bath_temperature, :rest_time, :_destroy ],
-      sauna_meal_attributes: [ :id, :restaurant, :_destroy ]
+      sauna_meals_attributes: [ :id, :restaurant, :_destroy ]
       )
   end
 end
