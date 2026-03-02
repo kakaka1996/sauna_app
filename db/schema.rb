@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_28_140651) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_01_150951) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,6 +22,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_28_140651) do
     t.string "facility", null: false
     t.integer "satisfaction", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_sauna_logs_on_user_id"
   end
 
   create_table "sauna_meals", force: :cascade do |t|
@@ -57,6 +59,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_28_140651) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "sauna_logs", "users"
   add_foreign_key "sauna_meals", "sauna_logs"
   add_foreign_key "sauna_sets", "sauna_logs"
 end

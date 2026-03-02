@@ -11,6 +11,7 @@ class SaunaLogsController < ApplicationController
 
   def create
     @post_sauna_log = SaunaLog.new(post_sauna_log_params)
+    @post_sauna_log.user_id = current_user.id
     if @post_sauna_log.save
       redirect_to new_sauna_log_path(@post_sauna_log), notice: "記録が完了しました"
     else
