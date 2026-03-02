@@ -8,27 +8,30 @@ const startGMap = () => {
     const mapElement = document.getElementById("map");
     if (!mapElement) return;
 
-    // google.maps.Map が「関数」として存在するか厳密にチェック
     if (typeof google !== 'undefined' && google.maps && typeof google.maps.Map === 'function') {
         initMap();
         initSearching();
         initRouteSearch();
     } else {
-        // まだ準備ができていない場合は、0.2秒後に再試行
         setTimeout(startGMap, 200);
     }
 };
-// 起動イベントの設定
-document.addEventListener("turbo:load", startGMap);
-if (document.readyState !== 'loading') {
+
+// 起動イベントの設定（すべてここに入れる）
+document.addEventListener("turbo:load", () => {
     startGMap();
-}
+    addSaunaForm();
+    addSaunaMealForm();
+});
 
-document.addEventListener("turbo:load", () => {
+// とりあえず登録
+const initApp = () => {
+    addSaunaForm();
+    addSaunaMealForm();
+};
+document.addEventListener("turbo:render", initApp);
+
+document.addEventListener("DOMContentLoaded", () => {
   addSaunaForm();
-
-})
-document.addEventListener("turbo:load", () => {
-
-  addSaunaMealForm();
+  addSaunaMealForm()
 })

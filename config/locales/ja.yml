@@ -5,3 +5,8 @@ ja:
         name: "ユーザーネーム"
         email: "メールアドレス"
         password: "パスワード"
+      sauna_log:
+        facility: "サウナ施設"
+        experience_date: "日時"
+        satisfaction: "満足度"
+        crowding: "混雑度"
