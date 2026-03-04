@@ -6,7 +6,7 @@ class SaunaLog < ApplicationRecord
   validates :comment, length: { maximum: 100 }
   validates :satisfaction, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
 
-# カスタムバリデーションを登録
+  # カスタムバリデーションを登録
   validate :at_least_one_sauna_set
 
   belongs_to :user

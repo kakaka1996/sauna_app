@@ -7,5 +7,4 @@ validates :water_bath_temperature, numericality: { only_integer: true, greater_t
 validates :rest_time, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 60 }
 
 belongs_to :sauna_log, foreign_key: "sauna_log_id", inverse_of: :sauna_sets
-
 end
