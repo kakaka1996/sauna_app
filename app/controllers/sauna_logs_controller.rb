@@ -10,12 +10,14 @@ class SaunaLogsController < ApplicationController
   end
 
   def create
-    @post_sauna_log = SaunaLog.new(post_sauna_log_params)
+    @post_sauna_log = current_user.sauna_logs.build(post_sauna_log_params)
     @post_sauna_log.user_id = current_user.id
     if @post_sauna_log.save
       redirect_to new_sauna_log_path(@post_sauna_log), notice: "記録が完了しました"
     else
-      flash.now[:alert] = "記録を作成できませんでした"
+      remaining_sets = 4 - @post_sauna_log.sauna_sets.size
+      remaining_sets.times { @post_sauna_log.sauna_sets.build } if remaining_sets > 0
+      @post_sauna_log.sauna_meals.build if @post_sauna_log.sauna_meals.blank?
       render :new,  status: :unprocessable_entity
     end
   end
