@@ -1,6 +1,9 @@
+<% content_for :sauna_button_js do %>
+    <%= javascript_import_module_tag "log_create_button" %>
+<% end %>
 <% @post_sauna_log.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+    <li><%= message %></li>
+<% end %>
 <div class="max-w-2xl mx-auto p-4 flex flex-col items-center">
     <h1 class="text-2xl font-bold mb-6">サウナ記録</h1>
 
@@ -24,17 +27,17 @@
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-bold">サウナ記録</h2>
                     <div class="space-x-2">
-                            <button id="add-sauna_form" type="button" class="px-3 py-2  bg-white text-gray-700 font-bold rounded-xl shadow-md hover:shadow-lg active:scale-95 active:shadow-inner transition-all duration-150 ease-in-out border-2 border-black-800">＋セット追加</button>
-                            <button id="hide-sauna_form" type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">ー非表示</button>
+                        <button id="add-sauna_form" type="button" class="px-3 py-2  bg-white text-gray-700 font-bold rounded-xl shadow-md hover:shadow-lg active:scale-95 active:shadow-inner transition-all duration-150 ease-in-out border-2 border-black-800">＋セット追加</button>
+                        <button id="hide-sauna_form" type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition">ー非表示</button>
                     </div>
                 </div>
                 <%# 子model(sauna_set)フォーム %>
         
                 <%= f.fields_for :sauna_sets do |s|%>
                 <%# # 1番目(index 0)のフォーム、または既に入力値がある場合は表示する %>
-                <% is_visible = (s.index == 0 || s.object.heat_time.present? || s.object.heat_temperature.present?); display_style = is_visible ? "display: block;" : "display: none;" %>
-                    <div class="sauna-set bg-blue-200 p-6 rounded-lg border border-blue-500 space-y-3 hidden" >
-                        <h3 class="font-bold text-blue-800"><span class="set-number"></span> 周目</h3>
+                    <% is_visible = (s.index == 0 || s.object.heat_time.present? || s.object.heat_temperature.present?); display_style = is_visible ? "display: block;" : "display: none;" %>
+                        <div class="sauna-set bg-blue-200 p-6 rounded-lg border border-blue-500 space-y-3 <%= 'hidden' unless s.index == 0 %>">
+                            <h3 class="font-bold text-blue-800"><span class="set-number"></span> 周目</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="sauna-set-field">
                                 <%= s.label :heat_time, 'サウナ時間', class: "text-sm text-gray-600" %>
@@ -75,7 +78,7 @@
 <%# 子model(sauna_meal)フォーム %>
     <div id="meal-form" class="space-y-4">
         <%= f.fields_for :sauna_meals do |m| %>
-            <div class="sauna-meal bg-orange-50 p-6 rounded-lg border-2 border-black hidden" >
+            <div class="sauna-meal bg-blue-200 p-6 rounded-lg border border-blue-500 space-y-3 <%= 'hidden' unless m.index == 0 %>">
                 <div class="flex flex-col">
                     <%= m.label :restaurant, 'サウナ飯店名', class: "font-bold mb-1" %>
                     <%= m.text_field :restaurant, class: "w-full border-2 border-black p-2 rounded-md focus:ring-2 focus:ring-orange-500 outline-none bg-white" %>
