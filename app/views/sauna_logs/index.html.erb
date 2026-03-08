@@ -1,2 +1,13 @@
+<%= month_calendar events: @saunas do |date, saunas| %>
+  <div class="space-y-1">
+    <% saunas.each do |sauna| %>
+      <%= link_to sauna.facility, sauna_log_path(sauna), 
+          class: "block text-[10px] sm:text-xs p-1 bg-white/80 border border-cyan-200 text-cyan-800 rounded shadow-sm truncate hover:bg-cyan-100 transition-colors" %>
+    <% end %>
+  </div>
+<% end %>
 
-<%= link_to "作成", new_sauna_log_path %>
+
+<div class="mt-8 mb-12 flex justify-center">
+  <%= link_to "新規作成", new_sauna_log_path, class: "inline-flex items-center px-6 py-2 text-sm font-medium text-white bg-blue-400 rounded hover:bg-slate-700 transition-colors" %>
+</div>
