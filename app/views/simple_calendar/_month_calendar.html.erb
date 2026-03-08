@@ -1,0 +1,57 @@
+<div class="simple-calendar bg-white rounded-2xl shadow-sm border border-slate-100 p-4 sm:p-6">
+  <div class="calendar-heading flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+    <time datetime="<%= start_date.strftime('%Y-%m') %>" class="text-xl font-bold text-slate-800 tracking-tight">
+      <%= start_date.year %>年 <span class="text-blue-600"><%= t('date.month_names')[start_date.month] %></span>
+    </time>
+
+    <nav class="flex items-center bg-slate-50 rounded-lg p-1 border border-slate-200">
+      <%= link_to t('simple_calendar.previous', default: '前月'), calendar.url_for_previous_view, 
+          class: "px-4 py-1.5 text-sm font-medium text-slate-600 hover:bg-white hover:shadow-sm rounded-md transition-all" %>
+      
+      <%= link_to t('simple_calendar.today', default: '今日'), calendar.url_for_today_view, 
+          class: "px-4 py-1.5 text-sm font-medium text-slate-600 hover:bg-white hover:shadow-sm rounded-md border-x border-slate-200 transition-all" %>
+      
+      <%= link_to t('simple_calendar.next', default: '次月'), calendar.url_for_next_view, 
+          class: "px-4 py-1.5 text-sm font-medium text-slate-600 hover:bg-white hover:shadow-sm rounded-md transition-all" %>
+    </nav>
+  </div>
+
+  <div class="overflow-hidden border border-slate-200 rounded-xl">
+    <table class="w-full border-collapse table-fixed">
+      <thead>
+        <tr class="bg-slate-50">
+          <% date_range.slice(0, 7).each do |day| %>
+            <th class="py-3 text-xs font-semibold uppercase tracking-wider text-slate-500 border-b border-slate-200">
+              <span class="<%= 'text-red-400' if day.wday == 0 %> <%= 'text-blue-400' if day.wday == 6 %>">
+                <%= t('date.abbr_day_names')[day.wday] %>
+              </span>
+            </th>
+          <% end %>
+        </tr>
+      </thead>
+
+     <tbody class="divide-y divide-slate-200">
+  <% date_range.each_slice(7) do |week| %>
+    <tr class="divide-x divide-slate-100">
+      <% week.each do |day| %>
+
+        <% events = calendar.sorted_events_for(day) %>
+  
+        <%= content_tag :td, class: "#{calendar.td_classes_for(day)} h-20 p-1 transition-colors hover:bg-slate-50/50 #{'bg-cyan-50' if events.any?}" do %>
+          <div class="flex flex-col h-full overflow-hidden">
+            <span class="text-sm font-medium <%= day == Date.today ? 'bg-blue-600 text-white w-6 h-6 flex items-center justify-center rounded-full' : 'text-slate-400' %>">
+              <%= day.day %>
+            </span>
+            
+            <div class="mt-1 flex-grow overflow-y-auto scrollbar-hide">
+              <% instance_exec(day, events, &passed_block) %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </tr>
+  <% end %>
+</tbody>
+    </table>
+  </div>
+</div>

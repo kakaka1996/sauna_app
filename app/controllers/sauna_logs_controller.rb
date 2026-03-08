@@ -1,6 +1,7 @@
 class SaunaLogsController < ApplicationController
   before_action :authenticate_user!
   def index
+    @saunas = SaunaLog.all
   end
 
   def new
@@ -9,16 +10,48 @@ class SaunaLogsController < ApplicationController
     1.times { @post_sauna_log.sauna_meals.build }
   end
 
+   def show
+    @sauna = current_user.sauna_logs.find_by(id: params[:id])
+  end
+
+
   def create
     @post_sauna_log = current_user.sauna_logs.build(post_sauna_log_params)
     @post_sauna_log.user_id = current_user.id
     if @post_sauna_log.save
-      redirect_to new_sauna_log_path(@post_sauna_log), notice: "記録が完了しました"
+      redirect_to sauna_log_path(@post_sauna_log), notice: "記録が完了しました"
     else
       remaining_sets = 4 - @post_sauna_log.sauna_sets.size
       remaining_sets.times { @post_sauna_log.sauna_sets.build } if remaining_sets > 0
       @post_sauna_log.sauna_meals.build if @post_sauna_log.sauna_meals.blank?
       render :new,  status: :unprocessable_entity
+    end
+  end
+
+   def destroy
+    @sauna = current_user.sauna_logs.find(params[:id])
+    @sauna.destroy!
+    redirect_to sauna_logs_path, notice: "記録を削除しました", status: :see_other
+  end
+
+  def edit
+    @sauna = current_user.sauna_logs.find(params[:id])
+    display_count = 4
+  existing_count = @sauna.sauna_sets.size
+
+  if existing_count < display_count
+    (display_count - existing_count).times { @sauna.sauna_sets.build }
+  end
+  @sauna.sauna_meals.build if @sauna.sauna_meals.blank?
+  end
+
+def update
+    @sauna = current_user.sauna_logs.find(params[:id])
+
+    if @sauna.update(post_sauna_log_params)
+      redirect_to sauna_log_path(@sauna), notice: "記録を更新しました"
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 

@@ -16,6 +16,10 @@ class SaunaLog < ApplicationRecord
   has_many :sauna_meals, dependent: :destroy, inverse_of: :sauna_log
       accepts_nested_attributes_for :sauna_meals, allow_destroy: true, reject_if: :all_blank, limit: 1
 
+  def start_time
+    self.experience_date
+  end
+
   private
 
   def at_least_one_sauna_set

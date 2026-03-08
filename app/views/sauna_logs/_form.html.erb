@@ -1,0 +1,126 @@
+
+<%# エラーメッセージの表示 %>
+<% if sauna.errors.any? %>
+  <div class="w-full bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+    <ul class="list-disc ml-5 text-red-700 font-bold">
+      <% sauna.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="w-full space-y-8">
+  <%# 基本情報セクション %>
+  <div class="bg-blue-50 p-6 rounded-lg shadow-sm border border-black-200 w-full space-y-4">
+    <div class="flex flex-wrap gap-4 mb-4 w-full">
+      <div class="flex-1 min-w-[150px]">
+        <%= f.label :experience_date, '日時', class: "block font-bold text-gray-700" %>
+        <%= f.date_field :experience_date, class: "w-full border-2 border-black rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 mt-1" %>
+      </div>
+      <div class="flex-1 min-w-[200px]">
+        <%= f.label :facility, 'サウナ施設名', class: "block font-bold text-gray-700 mb-1" %>
+        <%= f.text_field :facility, class: "w-full border-2 border-black rounded-md shadow-sm focus:ring-2 focus:ring-indigo-500 mt-1" %>
+      </div>
+    </div>
+
+    <%# サウナセットセクション %>
+    <div id="set_form" class="w-full space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold">サウナセット</h2>
+        <div class="space-x-2">
+          <button id="add-sauna_form" type="button" class="px-3 py-2 bg-white text-gray-700 font-bold rounded-xl shadow-md border-2 border-black hover:bg-gray-50 active:scale-95 transition-all">＋セット追加</button>
+          <button id="hide-sauna_form" type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">ー非表示</button>
+        </div>
+      </div>
+
+      <%= f.fields_for :sauna_sets do |s| %>
+        <%# 表示条件：最初のセット、または既に入力済みのデータ %>
+        <% is_visible = (s.index == 0 || s.object.heat_time.present? || s.object.persisted?) %>
+        <div class="sauna-set bg-blue-200 p-6 rounded-lg border border-blue-500 space-y-3 <%= 'hidden' unless is_visible %>">
+          <div class="flex justify-between items-center">
+            <h3 class="font-bold text-blue-800"><span class="set-number"><%= s.index + 1 %></span> 周目</h3>
+            
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="sauna-set-field">
+              <%= s.label :heat_time, 'サウナ時間', class: "text-sm text-gray-600" %>
+              <div class="flex items-center">
+                <%= s.number_field :heat_time, class: "w-24 border-gray-300 rounded-md mr-1" %><span class="font-bold">分</span>
+              </div>
+            </div>
+            <div class="sauna-set-field">
+              <%= s.label :heat_temperature, 'サウナ温度', class: "text-sm text-gray-600" %>
+              <div class="flex items-center">
+                <%= s.number_field :heat_temperature, class: "w-24 border-gray-300 rounded-md mr-1" %><span class="font-bold">℃</span>
+              </div>
+            </div>
+            <div class="sauna-set-field">
+              <%= s.label :water_bath_time, '水風呂時間', class: "text-sm text-gray-600" %>
+              <div class="flex items-center">
+                <%= s.number_field :water_bath_time, class: "w-24 border-gray-300 rounded-md mr-1" %><span class="font-bold">分</span>
+              </div>
+            </div>
+            <div class="sauna-set-field">
+              <%= s.label :water_bath_temperature, '水風呂温度', class: "text-sm text-gray-600" %>
+              <div class="flex items-center">
+                <%= s.number_field :water_bath_temperature, class: "w-24 border-gray-300 rounded-md mr-1" %><span class="font-bold">℃</span>
+              </div>
+            </div>
+            <div class="sauna-set-field">
+              <%= s.label :rest_time, '外気浴時間', class: "text-sm text-gray-600" %>
+              <div class="flex items-center">
+                <%= s.number_field :rest_time, class: "w-24 border-gray-300 rounded-md mr-1" %><span class="font-bold">分</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <%# サウナ飯セクション %>
+    <div class="mt-8 pt-8 border-t-2 border-gray-100">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-bold text-gray-800">サウナ飯記録</h2>
+        <div class="space-x-2">
+          <button id="add-sauna_meal_form" type="button" class="px-4 py-2 bg-orange-500 text-white font-bold rounded-full shadow-md hover:bg-orange-600 active:scale-95 transition-all">＋ 追加</button>
+          <button id="hide-sauna_meal_form" type="button" class="px-4 py-2 bg-gray-200 text-gray-700 font-bold rounded-full hover:bg-gray-300">ー非表示</button>
+        </div>
+      </div>
+      <div id="meal-form" class="space-y-4">
+        <%= f.fields_for :sauna_meals do |m| %>
+          <% is_meal_visible = (m.index == 0 || m.object.restaurant.present? || m.object.persisted?) %>
+          <div class="sauna-meal bg-orange-100 p-6 rounded-lg border border-orange-300 space-y-3 <%= 'hidden' unless is_meal_visible %>">
+            <div class="flex flex-col">
+              <%= m.label :restaurant, 'サウナ飯店名', class: "font-bold mb-1" %>
+              <%= m.text_field :restaurant, class: "w-full border-2 border-black p-2 rounded-md focus:ring-2 focus:ring-orange-500 bg-white" %>
+            </div>
+            <% if m.object.persisted? %>
+              <div class="flex items-center text-red-600 text-xs font-bold">
+                <%= m.check_box :_destroy, class: "mr-1" %>
+                <%= m.label :_destroy, "この飯記録を削除" %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%# 満足度・混雑度・コメント %>
+  <div class="mt-8 space-y-6 bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+    <div class="flex flex-col">
+      <%= f.label :crowding, '混雑度（1:空いている 〜 5:混んでいる）', class: "font-bold mb-2" %>
+      <%= f.number_field :crowding, in: 1..5, class: "w-24 border-2 border-black rounded-md" %>
+    </div>
+    <div class="flex flex-col">
+      <%= f.label :satisfaction, '満足度（1:不満 〜 5:満足）', class: "font-bold mb-2" %>
+      <%= f.number_field :satisfaction, in: 1..5, class: "w-24 border-2 border-black rounded-md" %>
+    </div>
+    <div class="flex flex-col">
+      <%= f.label :comment, '感想・メモ', class: "font-bold mb-1" %>
+      <%= f.text_area :comment, rows: 4, class: "w-full border-2 border-black p-2 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none bg-white" %>
+    </div>
+  </div>
+</div>
