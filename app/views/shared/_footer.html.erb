@@ -1,8 +1,8 @@
 <footer class="bg-sky-400 py-4">
     <div class="max-w-7xl mx-auto px-4 flex items-baseline justify-between text-white">
 <%# 各種ページが完成したらコメントアウト解除 %>
-        <%# <%= link_to "プライバシーポリシー", "/"  %>
-        <%# <%= link_to "利用規約", "/" %>
-        <%# <%= link_to "お問い合わせ", "/" %>
+        <%= link_to "利用規約", terms_of_service_path, class: "hover:underline" %>
+        <%= link_to "プライバシーポリシー", privacy_policy_path %>
+        <%= link_to "お問い合わせはこちら", inquiry_form_path %>
     </div>
 </footer>
