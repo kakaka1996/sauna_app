@@ -3,7 +3,7 @@ import { getCurrentLocationMarker } from "get_current_location"
 import { getDestination } from "searching"
 
 let directionService;
-let directionRenderer;
+export let directionRenderer;
 
 export function initRouteSearch() {
     const routeBtn = document.getElementById("route_search");
@@ -41,6 +41,22 @@ export async function culRoute(){
         // 検索結果をマップに表示
             directionRenderer.setMap(map);
             directionRenderer.setDirections(response);
+            const leg = response.routes[0].legs[0];
+                const time = leg.duration.text;      // 例: "25分"
+                const distance = leg.distance.text;  // 例: "5.2 km"
+
+                // HTML要素を取得
+                const panel = document.getElementById("route_info_panel");
+                const durationEl = document.getElementById("duration_text");
+                const distanceEl = document.getElementById("distance_text");
+
+                // 文字を書き換える
+                durationEl.textContent = time;
+                distanceEl.textContent = distance;
+
+                // Tailwindの 'hidden' クラスを削除してパネルを表示させる
+                panel.classList.remove("hidden");
+                // ----------------------------
         } else{
             alert("検索結果を取得できません")
             }

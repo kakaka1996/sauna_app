@@ -1,11 +1,11 @@
 import { getMap } from "map"
-// import { initSearching } from "searching"
-// import { getDestination } from "./searching";
 
-let infoWindow = null
+
+let restaurantMarkers = [];
+// let infoWindow = null
 
 export function searchNearRestaurant(latlng) {
-    console.log("受け取った座標:", latlng)
+    clearRestaurantMarkers();
     const map = getMap();
     const service = new google.maps.places.PlacesService(map);
     const request = {
@@ -19,11 +19,18 @@ export function searchNearRestaurant(latlng) {
 
 service.nearbySearch(request, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            for(let i = 0; i < results.length; i ++){
-                createRestaurantMarker(results[i], map);
-            }
+            results.forEach(place => {
+                createRestaurantMarker(place, map);
+            });
         }
     });
+}
+
+export function clearRestaurantMarkers() {
+    for (let i = 0; i < restaurantMarkers.length; i++) {
+        restaurantMarkers[i].setMap(null); // 地図から消す
+    }
+    restaurantMarkers = []; // 配列を空っぽにする
 }
 
 function createRestaurantMarker(place, map) {
@@ -32,7 +39,7 @@ function createRestaurantMarker(place, map) {
         map: map,
         icon: 'http://maps.google.co.jp/mapfiles/ms/icons/orange-dot.png' // 色を変えると目的地と区別しやすいです
     });
-
+    restaurantMarkers.push(marker);
     marker.addListener('click', () => {
         const service = new google.maps.places.PlacesService(map);
         service.getDetails({

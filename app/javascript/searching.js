@@ -1,5 +1,8 @@
 import { getMap } from "map"
-import { searchNearRestaurant } from "near_search"
+import { searchNearRestaurant, clearRestaurantMarkers } from "near_search"
+import { directionRenderer } from "route_search"
+
+
 
 let destinationLatLng = null;
 let marker = null;
@@ -18,15 +21,31 @@ export async function initSearching() {
 
     searchBtn.addEventListener('click', () => {
         const inputName = document.getElementById('place_search').value;
-        if (!inputName) return;
+        if (!inputName) {
+               alert("検索欄に入力してください");
+               return;
+        }
+        // 1. 目的地マーカーを消す
+    if (marker) { marker.setMap(null); marker = null; }
+    if (infoWindow) { infoWindow.close(); }
+    
+    // 他ファイルから import したリセット処理
+    if (directionRenderer) { directionRenderer.setMap(null); }
+    clearRestaurantMarkers();
 
+    const panel = document.getElementById("route_info_panel");
+    if (panel) { panel.classList.add("hidden"); 
+
+    }
+        
         const request = {
             query: inputName,
-            fields: ['name', 'geometry', 'place_id'], 
+            // fields: ['name', 'geometry', 'place_id'],
+            type: 'spa'
         };
 
-        service.findPlaceFromQuery(request, (results, status) => {
-            if (status === google.maps.places.PlacesServiceStatus.OK ) {
+        service.textSearch(request, (results, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK && results.length >= 1) {
                 const place = results[0];
                 const latlng = place.geometry.location;
 
@@ -39,6 +58,12 @@ export async function initSearching() {
                 
                 // 周辺レストラン検索も実行
                 searchNearRestaurant(latlng);
+            }
+            else if (status === google.maps.places.PlacesServiceStatus.OK && results.length === 0){
+                alert("サウナ施設が見つかりませんでした");
+            }
+            else {
+                alert("検索中にエラーが発生しました")
             }
         });
     });
@@ -85,8 +110,8 @@ export function setMarker(latlng, map, placeid) {
     destinationLatLng = latlng; // ここで座標を保存しておく
 
     marker.addListener('click', () => {
-      if (placeId) {
-            fetchAndShowDetails(placeId, map);
+      if (placeid) {
+            fetchAndShowDetails(placeid, map);
         }
     });
 }
