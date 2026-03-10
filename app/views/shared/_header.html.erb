@@ -1,17 +1,23 @@
 <header class="bg-sky-300 py-4">
-    <div class="max-w-7xl mx-auto px-4 flex justify-between items-baseline  text-white ">
-        <%= link_to "アプリ名", root_path, class: "text-3xl hover:font-bold" %>
-        <% if user_signed_in? %>
-        <div class="inline-block gap-4">
-            <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete }, class: "hover:font-bold" %>
-        </div>
-        
-        <% else%>
-        <div class="inline-block gap-4">
-            <%= link_to "新規登録", new_user_registration_path, data: { turbo: false }, class: "hover:font-bold" %>
-            <%= link_to "ログイン", new_user_session_path, data: { turbo: false }, class: "hover:font-bold" %>
-            
-        </div>
-        <% end %>
+  <div class="max-w-7xl mx-auto px-4 flex justify-between items-center text-white">
+    <div class="flex items-center gap-6">
+      <%= link_to "SAUNA_DAY", top_path, class: "group flex items-center gap-2 text-2xl font-black tracking-tighter sm:text-3xl transition-transform hover:scale-105" %>
+      <%= link_to root_path, class: "hidden sm:block text-sm font-bold opacity-90 hover:opacity-100 border-b border-white pb-0.5 transition-all" do %>
+        使い方はこちらから
+      <% end %>
     </div>
+
+    <nav>
+      <% if user_signed_in? %>
+        <%= link_to "ログアウト", destroy_user_session_path, 
+            data: { turbo_method: :delete }, 
+            class: "text-sm font-semibold opacity-90 hover:opacity-100 transition-all border-b-2 border-transparent hover:border-white pb-0.5" %>
+      <% else %>
+        <div class="flex items-center gap-4 sm:gap-6">
+          <%= link_to "ログイン", new_user_session_path, data: { turbo: false }, class: "text-sm font-semibold opacity-90 hover:opacity-100 transition-all" %>
+          <%= link_to "新規登録", new_user_registration_path, data: { turbo: false }, class: "px-4 py-2 text-sm font-bold bg-white text-sky-500 rounded-full shadow-sm hover:bg-sky-50 transition-colors" %>
+        </div>
+      <% end %>
+    </nav>
+  </div>
 </header>

@@ -1,75 +1,54 @@
-import { getMap } from "map"
 import { searchNearRestaurant, clearRestaurantMarkers } from "near_search"
 import { directionRenderer } from "route_search"
-
-
 
 let destinationLatLng = null;
 let marker = null;
 let infoWindow = null;
 
- 
-export async function initSearching() {
-    const {PlacesService} = await google.maps.importLibrary("places")
-    const map = getMap();
-    // 
-    const searchBtn = document.getElementById("search_execution");
-     infoWindow = new google.maps.InfoWindow();
+export async function initSearching(map) {
+    if (!map) return;
 
-    // 1. PlacesService を準備
+    const { PlacesService } = await google.maps.importLibrary("places");
+    const searchBtn = document.getElementById("search_execution");
+    if (!searchBtn) return;
+
+    if (!infoWindow) infoWindow = new google.maps.InfoWindow();
     const service = new PlacesService(map);
 
     searchBtn.addEventListener('click', () => {
         const inputName = document.getElementById('place_search').value;
         if (!inputName) {
-               alert("検索欄に入力してください");
-               return;
+            alert("検索欄に入力してください");
+            return;
         }
-        // 1. 目的地マーカーを消す
-    if (marker) { marker.setMap(null); marker = null; }
-    if (infoWindow) { infoWindow.close(); }
-    
-    // 他ファイルから import したリセット処理
-    if (directionRenderer) { directionRenderer.setMap(null); }
-    clearRestaurantMarkers();
 
-    const panel = document.getElementById("route_info_panel");
-    if (panel) { panel.classList.add("hidden"); 
+        if (marker) marker.setMap(null);
+        if (infoWindow) infoWindow.close();
+        if (directionRenderer) directionRenderer.setMap(null);
+        clearRestaurantMarkers();
 
-    }
-        
-        const request = {
-            query: inputName,
-            // fields: ['name', 'geometry', 'place_id'],
-            type: 'spa'
-        };
+        const panel = document.getElementById("route_info_panel");
+        if (panel) panel.classList.add("hidden");
+
+        const request = { query: inputName, type: 'spa' };
 
         service.textSearch(request, (results, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK && results.length >= 1) {
                 const place = results[0];
                 const latlng = place.geometry.location;
 
-                // 地図の中心を移動してマーカーを立てる
                 map.setCenter(latlng);
                 setMarker(latlng, map, place.place_id);
-
-                // 3. place_id を使って詳細情報を取得
                 fetchAndShowDetails(place.place_id, map);
-                
-                // 周辺レストラン検索も実行
-                searchNearRestaurant(latlng);
-            }
-            else if (status === google.maps.places.PlacesServiceStatus.OK && results.length === 0){
-                alert("サウナ施設が見つかりませんでした");
-            }
-            else {
-                alert("検索中にエラーが発生しました")
+                // レストラン検索にも map を渡すよう修正が必要（後述）
+                searchNearRestaurant(latlng, map);
+            } else {
+                alert("施設が見つからないかエラーが発生しました");
             }
         });
     });
 }
 
-// 詳細情報を取得してインフォウィンドウを開く関数
 function fetchAndShowDetails(placeId, map) {
     const service = new google.maps.places.PlacesService(map);
     service.getDetails({
@@ -77,24 +56,14 @@ function fetchAndShowDetails(placeId, map) {
         fields: ['name', 'formatted_address', 'website', 'photos']
     }, (details, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            // 写真URLの取得（あれば）
             const photoUrl = details.photos ? details.photos[0].getUrl({maxWidth: 300}) : "";
-        
-
-            // インフォウィンドウに表示する内容を作成
             const content = `
-                <div>
+                <div class="p-1">
                     <strong>${details.name}</strong><br>
-                    ${details.formatted_address}<br>
-                    <a href="${details.website}" target="_blank">${details.website}</a><br>
-                    ${photoUrl ? `<img src="${photoUrl}" style="width:100%;max-width:200px;">` : ""}
-                </div>
-            `;
-            if (infoWindow && marker) {
-                infoWindow.setContent(content);
-                infoWindow.open(map, marker);
-            }
-            // 目的地マーカーにイベントを設定
+                    <span class="text-xs text-slate-500">${details.formatted_address}</span><br>
+                    ${details.website ? `<a href="${details.website}" target="_blank" class="text-sky-500 underline text-xs">公式サイト</a>` : ""}<br>
+                    ${photoUrl ? `<img src="${photoUrl}" class="mt-2 rounded" style="max-width:200px;">` : ""}
+                </div>`;
             infoWindow.setContent(content);
             infoWindow.open(map, marker);
         }
@@ -103,19 +72,9 @@ function fetchAndShowDetails(placeId, map) {
 
 export function setMarker(latlng, map, placeid) {
     if (marker) marker.setMap(null);
-    marker = new google.maps.Marker({
-        position: latlng,
-        map: map,
-    });
-    destinationLatLng = latlng; // ここで座標を保存しておく
-
-    marker.addListener('click', () => {
-      if (placeid) {
-            fetchAndShowDetails(placeid, map);
-        }
-    });
+    marker = new google.maps.Marker({ position: latlng, map: map });
+    destinationLatLng = latlng;
+    marker.addListener('click', () => { if (placeid) fetchAndShowDetails(placeid, map); });
 }
 
-export function getDestination() {
-    return destinationLatLng;
-}
+export function getDestination() { return destinationLatLng; }

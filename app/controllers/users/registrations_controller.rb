@@ -29,6 +29,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
+  def after_sign_in_path_for(resource)
+    top_path # 遷移先のパス
+  end
+
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
   # in to be expired now. This is useful if the user wants to
