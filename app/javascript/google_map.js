@@ -1,32 +1,33 @@
-import { initMap } from "map"
 import { initSearching } from "searching"
 import { initRouteSearch} from "route_search"
 // import { addSaunaForm, addSaunaMealForm } from "log_create_button"
 
 (async () => {
+  // current map instance (cached across turbo navigations)
+  let mapInstance = null;
+
   // 地図を描画する関数を定義
   async function startGMap() {
     const mapElement = document.getElementById("map");
     if (!mapElement) return; // 要素がなければ何もしない（他画面への配慮）
 
-    // すでに地図が描画済みならスキップ
-    if (mapElement.dataset.rendered) return;
-
     try {
-      const { Map } = await google.maps.importLibrary("maps");
-      const map = new Map(mapElement, {
-        center: { lat: 35.412715, lng: 136.771715 },
-        zoom: 15,
-        styles: [{
-          "featureType": "poi.business",
-          "elementType": "labels.icon",
-          "stylers": [{"visibility": "off"}]
-        }]
-      });
-      mapElement.dataset.rendered = "true";
+      if (!mapInstance) {
+        const { Map } = await google.maps.importLibrary("maps");
+        mapInstance = new Map(mapElement, {
+          center: { lat: 35.412715, lng: 136.771715 },
+          zoom: 15,
+          styles: [{
+            "featureType": "poi.business",
+            "elementType": "labels.icon",
+            "stylers": [{"visibility": "off"}]
+          }]
+        });
+      }
 
-      initSearching(map);
-      initRouteSearch(map);
+      // Mapが準備できていれば、必ず検索／ルートの初期化を行う
+      initSearching(mapInstance);
+      initRouteSearch(mapInstance);
     } catch (e) {
       console.error("Google Maps Load Error:", e);
     }

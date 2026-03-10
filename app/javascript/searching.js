@@ -6,6 +6,7 @@ let marker = null;
 let infoWindow = null;
 
 export async function initSearching(map) {
+    window.__initSearching = initSearching;      // console から呼べるように
     if (!map) return;
 
     const { PlacesService } = await google.maps.importLibrary("places");
@@ -32,7 +33,9 @@ export async function initSearching(map) {
 
         const request = { query: inputName, type: 'spa' };
 
+        console.log('textSearch request', request);
         service.textSearch(request, (results, status) => {
+            console.log('textSearch result', status, results);
             if (status === google.maps.places.PlacesServiceStatus.OK && results.length >= 1) {
                 const place = results[0];
                 const latlng = place.geometry.location;
