@@ -1,43 +1,41 @@
-import { getMap } from "map"
-// import { initSearching } from "searching"
-// import { getDestination } from "./searching";
+let restaurantMarkers = [];
 
-let infoWindow = null
-
-export function searchNearRestaurant(latlng) {
-    console.log("受け取った座標:", latlng)
-    const map = getMap();
+export function searchNearRestaurant(latlng, map) {
+    if (!map) return;
+    clearRestaurantMarkers();
+    
     const service = new google.maps.places.PlacesService(map);
     const request = {
-    location: {
-                lat: latlng.lat(), // 緯度を数値で取得
-                lng: latlng.lng()
-                },  // 経度を数値で取得,
-    radius: 2000,
-    type: 'restaurant'
-};
+        location: latlng,
+        radius: 2000,
+        type: 'restaurant'
+    };
 
-service.nearbySearch(request, (results, status) => {
+    service.nearbySearch(request, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            for(let i = 0; i < results.length; i ++){
-                createRestaurantMarker(results[i], map);
-            }
+            results.forEach(place => createRestaurantMarker(place, map));
         }
     });
+}
+
+export function clearRestaurantMarkers() {
+    restaurantMarkers.forEach(m => m.setMap(null));
+    restaurantMarkers = [];
 }
 
 function createRestaurantMarker(place, map) {
     const marker = new google.maps.Marker({
         position: place.geometry.location,
         map: map,
-        icon: 'http://maps.google.co.jp/mapfiles/ms/icons/orange-dot.png' // 色を変えると目的地と区別しやすいです
+        icon: 'http://maps.google.co.jp/mapfiles/ms/icons/orange-dot.png'
     });
+    restaurantMarkers.push(marker);
 
     marker.addListener('click', () => {
         const service = new google.maps.places.PlacesService(map);
         service.getDetails({
             placeId: place.place_id,
-            fields: ['name', 'formatted_address', 'website', 'opening_hours', 'photos']
+            fields: ['name', 'formatted_address', 'website', 'photos']
         }, (details, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 showInfoWindow(details, marker, map);
@@ -46,30 +44,17 @@ function createRestaurantMarker(place, map) {
     });
 }
 
-// 詳細を表示する関数を追加
 function showInfoWindow(details, marker, map) {
-    // 1. 写真URLの取得
     const photoUrl = details.photos ? details.photos[0].getUrl({maxWidth: 200}) : "";
-    
-    // 2. 営業状態の取得(表示するか検討)
-    // const openStatus = details.opening_hours ? (details.opening_hours.isOpen() ? "営業中" : "閉店") : "不明";
-    
-    // 3. ウェブサイトのリンク作成
-    const websiteLink = details.website ? `<a href="${details.website}" target="_blank">公式サイト</a>` : "サイトなし";
-
-    // 4. HTMLの組み立て
+    const websiteLink = details.website ? `<a href="${details.website}" target="_blank" class="text-sky-600 underline">公式サイト</a>` : "サイトなし";
     const content = `
-        <div style="padding:5px;">
-            <strong>${details.name}</strong><br>
-            <span style="font-size:0.9em;">${details.formatted_address}</span><br>
+        <div class="p-1">
+            <strong class="text-orange-600">${details.name}</strong><br>
+            <span class="text-xs">${details.formatted_address}</span><br>
             ${websiteLink}<br>
-            ${photoUrl ? `<img src="${photoUrl}" style="width:100%; max-width:180px; margin-top:8px; border-radius:4px;">` : ""}
-        </div>
-    `;
+            ${photoUrl ? `<img src="${photoUrl}" class="mt-2 rounded shadow-sm" style="max-width:180px;">` : ""}
+        </div>`;
 
-    // 5. インフォウィンドウを作成して開く
-    const infoWindow = new google.maps.InfoWindow({
-        content: content
-    });
+    const infoWindow = new google.maps.InfoWindow({ content: content });
     infoWindow.open(map, marker);
 }

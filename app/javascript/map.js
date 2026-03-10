@@ -3,7 +3,7 @@ let map;
 export async function initMap() {
     const { Map } = (await google.maps.importLibrary('maps'));
     map = new Map(document.getElementById('map'), {
-        center: { lat: 35.412715, lng: 136.771715 },
+        center: { lat: 35.68114 , lng:139.767061 },
         zoom: 15,
         styles:
             [{
@@ -15,3 +15,10 @@ export async function initMap() {
     );
 }
 export function getMap() { return map; }
+
+document.addEventListener('turbo:load', () => {
+  // すでにGoogle Maps APIが読み込まれているかチェック
+    if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
+    initMap();
+    }
+});

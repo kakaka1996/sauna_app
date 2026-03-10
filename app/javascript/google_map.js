@@ -3,22 +3,40 @@ import { initSearching } from "searching"
 import { initRouteSearch} from "route_search"
 // import { addSaunaForm, addSaunaMealForm } from "log_create_button"
 
-const startGMap = () => {
+(async () => {
+  // 地図を描画する関数を定義
+  async function startGMap() {
     const mapElement = document.getElementById("map");
-    if (!mapElement) return;
+    if (!mapElement) return; // 要素がなければ何もしない（他画面への配慮）
 
-    if (typeof google !== 'undefined' && google.maps && typeof google.maps.Map === 'function') {
-        initMap();
-        initSearching();
-        initRouteSearch();
-    } else {
-        setTimeout(startGMap, 200);
+    // すでに地図が描画済みならスキップ
+    if (mapElement.dataset.rendered) return;
+
+    try {
+      const { Map } = await google.maps.importLibrary("maps");
+      const map = new Map(mapElement, {
+        center: { lat: 35.412715, lng: 136.771715 },
+        zoom: 15,
+        styles: [{
+          "featureType": "poi.business",
+          "elementType": "labels.icon",
+          "stylers": [{"visibility": "off"}]
+        }]
+      });
+      mapElement.dataset.rendered = "true";
+
+      initSearching(map);
+      initRouteSearch(map);
+    } catch (e) {
+      console.error("Google Maps Load Error:", e);
     }
-};
+  }
 
-// 起動イベントの設定（すべてここに入れる）
-document.addEventListener("turbo:load", () => {
+  document.addEventListener("turbo:load", startGMap);  
+  // 初回読み込み時にも実行
+  if (document.readyState !== 'loading') {
     startGMap();
-    // addSaunaForm();
-    // addSaunaMealForm();
-});
+  } else {
+    document.addEventListener('DOMContentLoaded', startGMap);
+  }
+})();

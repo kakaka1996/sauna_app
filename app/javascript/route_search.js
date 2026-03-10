@@ -1,33 +1,30 @@
-import { getMap } from "map"
 import { getCurrentLocationMarker } from "get_current_location"
 import { getDestination } from "searching"
 
 let directionService;
-let directionRenderer;
+export let directionRenderer;
 
-export function initRouteSearch() {
+// initRouteSearchでmapを受け取り、イベントリスナーに仕込む
+export function initRouteSearch(map) {
     const routeBtn = document.getElementById("route_search");
-    if (routeBtn) {
-        routeBtn.removeEventListener("click", culRoute); 
-        routeBtn.addEventListener("click", culRoute);
-    }
+    if (!routeBtn) return;
+
+    // 前のイベントを消して、新しいmapを持った関数を登録
+    routeBtn.onclick = () => culRoute(map); 
 }
 
-export async function culRoute(){
-    try{
-    // 各種機能の実行
-        const map = getMap();
-        if (!directionService) {
-            directionService = new google.maps.DirectionsService();
-        }
-        if (!directionRenderer) {
-            directionRenderer = new google.maps.DirectionsRenderer();
-        }
-        const origin = await getCurrentLocationMarker();
+export async function culRoute(map) {
+    if (!map) return;
+    try {
+        if (!directionService) directionService = new google.maps.DirectionsService();
+        if (!directionRenderer) directionRenderer = new google.maps.DirectionsRenderer();
+        // map を渡して現在地を取得
+        const origin = await getCurrentLocationMarker(map);
         const destination = getDestination();
-        console.log("目的地の中身:", destination);
-        if(!destination) {
+
+        if (!destination) {
             alert("先に目的地を検索してください");
+            return;
         }
 
         directionService.route({
@@ -36,17 +33,19 @@ export async function culRoute(){
             travelMode: 'DRIVING',
             avoidTolls: true
         }, (response, status) => {
-        console.log(response);
-        if (status === google.maps.DirectionsStatus.OK){
-        // 検索結果をマップに表示
-            directionRenderer.setMap(map);
-            directionRenderer.setDirections(response);
-        } else{
-            alert("検索結果を取得できません")
+            if (status === google.maps.DirectionsStatus.OK) {
+                directionRenderer.setMap(map);
+                directionRenderer.setDirections(response);
+                const leg = response.routes[0].legs[0];
+                document.getElementById("duration_text").textContent = leg.duration.text;
+                document.getElementById("distance_text").textContent = leg.distance.text;
+                document.getElementById("route_info_panel").classList.remove("hidden");
+            } else {
+                alert("ルート検索に失敗しました");
             }
         });
     } catch (error) {
-        alert('現在地の取得に失敗しました')
+        alert('現在地またはルートの取得に失敗しました');
     }
 }
 
