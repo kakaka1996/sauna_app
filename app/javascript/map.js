@@ -16,9 +16,3 @@ export async function initMap() {
 }
 export function getMap() { return map; }
 
-document.addEventListener('turbo:load', () => {
-  // すでにGoogle Maps APIが読み込まれているかチェック
-    if (typeof google !== 'undefined' && typeof google.maps !== 'undefined') {
-    initMap();
-    }
-});

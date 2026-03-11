@@ -20,7 +20,9 @@ export async function culRoute(map) {
         if (!directionRenderer) directionRenderer = new google.maps.DirectionsRenderer();
         // map を渡して現在地を取得
         const origin = await getCurrentLocationMarker(map);
+        console.log('origin coords', origin);
         const destination = getDestination();
+        console.log('destination coords', destination);
 
         if (!destination) {
             alert("先に目的地を検索してください");
@@ -41,10 +43,12 @@ export async function culRoute(map) {
                 document.getElementById("distance_text").textContent = leg.distance.text;
                 document.getElementById("route_info_panel").classList.remove("hidden");
             } else {
+                console.error('directions failure', status, response);
                 alert("ルート検索に失敗しました");
             }
         });
     } catch (error) {
+        console.error('culRoute caught error', error);
         alert('現在地またはルートの取得に失敗しました');
     }
 }

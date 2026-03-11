@@ -1,5 +1,9 @@
 ja:
   activerecord:
+    models:
+      # モデル名そのものの翻訳を定義
+      sauna_log: "サウナ記録"
+      sauna_set: "サウナセット"
     attributes:
       user:
         name: "ユーザーネーム"
@@ -10,4 +14,11 @@ ja:
         experience_date: "日時"
         satisfaction: "満足度"
         crowding: "混雑度"
-        Sauna sets water bath time: "水風呂時間"
+        sauna_sets: "サウナセット"
+      sauna_set:
+        heat_time: "サウナ時間"
+        heat_temperature: "サウナ温度"
+        water_bath_time: "水風呂時間"
+        water_bath_temperature: "水風呂温度"
+        rest_time: "外気浴時間"
+
