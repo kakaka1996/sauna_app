@@ -1,10 +1,14 @@
-
-<%# エラーメッセージの表示 %>
 <% if sauna.errors.any? %>
   <div class="w-full bg-red-50 border-l-4 border-red-500 p-4 mb-6">
     <ul class="list-disc ml-5 text-red-700 font-bold">
-      <% sauna.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+      <% sauna.errors.each do |error| %>
+        <% next if error.attribute.to_s.include?("sauna_sets") %>
+        <li><%= error.full_message %></li>
+      <% end %>
+      <% sauna.sauna_sets.each do |set| %>
+        <% set.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       <% end %>
     </ul>
   </div>

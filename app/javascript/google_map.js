@@ -1,43 +1,50 @@
+// app/javascript/google_map.js
 import { initSearching } from "searching"
-import { initRouteSearch} from "route_search"
-// import { addSaunaForm, addSaunaMealForm } from "log_create_button"
+import { initRouteSearch } from "route_search"
 
-(async () => {
-  // current map instance (cached across turbo navigations)
-  let mapInstance = null;
+let mapInstance = null;
 
-  // 地図を描画する関数を定義
-  async function startGMap() {
-    const mapElement = document.getElementById("map");
-    if (!mapElement) return; // 要素がなければ何もしない（他画面への配慮）
+async function startGMap() {
+  const mapElement = document.getElementById("map");
+  
+  if (!mapElement || mapElement.dataset.initialized === "true") return;
 
-    try {
-      if (!mapInstance) {
-        const { Map } = await google.maps.importLibrary("maps");
-        mapInstance = new Map(mapElement, {
-          center: { lat: 35.412715, lng: 136.771715 },
-          zoom: 15,
-          styles: [{
-            "featureType": "poi.business",
-            "elementType": "labels.icon",
-            "stylers": [{"visibility": "off"}]
-          }]
-        });
-      }
-
-      // Mapが準備できていれば、必ず検索／ルートの初期化を行う
-      initSearching(mapInstance);
-      initRouteSearch(mapInstance);
-    } catch (e) {
-      console.error("Google Maps Load Error:", e);
+  let retryCount = 0;
+  while (typeof google === "undefined" || !google.maps || !google.maps.Map) {
+    if (retryCount > 50) {
+      console.error("Google Maps SDK fail to load.");
+      return;
     }
+    await new Promise(resolve => setTimeout(resolve, 100));
+    retryCount++;
   }
 
-  document.addEventListener("turbo:load", startGMap);  
-  // 初回読み込み時にも実行
-  if (document.readyState !== 'loading') {
-    startGMap();
-  } else {
-    document.addEventListener('DOMContentLoaded', startGMap);
+  try {
+    mapInstance = new google.maps.Map(mapElement, {
+      center: { lat: 35.412715, lng: 136.771715 },
+      zoom: 15,
+      styles: [{
+        "featureType": "poi.business",
+        "elementType": "labels.icon",
+        "stylers": [{"visibility": "off"}]
+      }]
+    });
+
+    mapElement.dataset.initialized = "true";
+
+    if (typeof initSearching === "function") initSearching(mapInstance);
+    if (typeof initRouteSearch === "function") initRouteSearch(mapInstance);
+
+  } catch (e) {
+    console.error("Google Maps Initialization Error:", e);
   }
-})();
+}
+
+document.addEventListener("turbo:load", startGMap);
+
+// 初回読み込み時の予備動作
+if (document.readyState !== 'loading') {
+  startGMap();
+} else {
+  document.addEventListener('DOMContentLoaded', startGMap);
+}
