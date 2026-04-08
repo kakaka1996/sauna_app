@@ -1,3 +1,4 @@
+// 近くのレストランと道順の検索機能のimport
 import { searchNearRestaurant, clearRestaurantMarkers } from "near_search"
 import { directionRenderer } from "route_search"
 
@@ -6,16 +7,13 @@ let marker = null;
 let infoWindow = null;
 
 export async function initSearching(map) {
-    window.__initSearching = initSearching;      // console から呼べるように
-    if (!map) return;
-
     const { PlacesService } = await google.maps.importLibrary("places");
     const searchBtn = document.getElementById("search_execution");
-    if (!searchBtn) return;
 
     if (!infoWindow) infoWindow = new google.maps.InfoWindow();
     const service = new PlacesService(map);
 
+    // 検索欄の文字の取得、できない場合はアラートの表示
     searchBtn.addEventListener('click', () => {
         const inputName = document.getElementById('place_search').value;
         if (!inputName) {
@@ -31,7 +29,25 @@ export async function initSearching(map) {
         const panel = document.getElementById("route_info_panel");
         if (panel) panel.classList.add("hidden");
 
-        const request = { query: inputName, type: 'spa' };
+        const request = { 
+            textQuery: query,
+            fields: ['displayName', 'location', 'businessStatus'],
+            includeType: 'spa',
+            useStrictTypeFiltering: true,
+            locationBias: map.center,
+            isOpenNow: true,
+            language: 'ja',
+            maxResultCount: 8,
+            minRating: 1, 
+            region: 'ja',
+         
+        
+        
+        
+        
+        
+        
+        };
 
         console.log('textSearch request', request);
         service.textSearch(request, (results, status) => {
