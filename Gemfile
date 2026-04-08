@@ -41,7 +41,7 @@ gem "thruster", require: false
   gem "image_processing", "~> 1.2"
 
   # cssフレームワークの導入
-  gem "tailwindcss-rails", "~> 3.3.1"
+  gem "tailwindcss-rails", "~> 4.4.0"
 
   # google_map_apiの導入
   gem "gmaps4rails"
