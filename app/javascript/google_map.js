@@ -6,7 +6,7 @@ let mapInstance = null;
 
 async function startGMap() {
   const mapElement = document.getElementById("map");
-  
+
   if (!mapElement || mapElement.dataset.initialized === "true") return;
 
   let retryCount = 0;
