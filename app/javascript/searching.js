@@ -5,6 +5,7 @@ import { directionRenderer } from "route_search"
 let destinationLatLng = null;
 let marker = null;
 let infoWindow = null;
+let markers = {};
 
 export async function initSearching(map) {
     // const { PlacesService } = await google.maps.importLibrary("places");
@@ -14,20 +15,26 @@ export async function initSearching(map) {
     const searchExecution = document.getElementById("search_execution");
     // ボタンクリックで検索発動
     searchExecution.addEventListener('click', () => {
-        findPlaces(placeSearch.value);
         if (!placeSearch) {
             alert("検索欄に入力してください");
             return;
         }
+        if (!map) {
+        return;
+    }
+        findPlaces(placeSearch.value);
     });
     // ENTER入力で検索発動
-        placeSearch.addEventListener('keydown', (event) => {
+    placeSearch.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
-            if (!inputName) {
+            if (!placeSearch) {
             alert("検索欄に入力してください");
             return;
         }
-            findPlaces(placeSearch.value);
+        if (!map) {
+        return;
+    }
+        findPlaces(placeSearch.value);
         }
     });
 
@@ -41,23 +48,29 @@ export async function initSearching(map) {
 
         const panel = document.getElementById("route_info_panel");
         if (panel) panel.classList.add("hidden");
+
+    async function findPlaces(query){
+        const { Place } = (await google.maps.importLibrary('places'));
+        const { AdvancedMarkerElement } = (await google.maps.importLibrary('marker'));
+
+        let text = query.trim();
+        if (!text.includes("サウナ") && !text.includes("銭湯")) {
+        text = `${text} サウナ 銭湯`;
+        }
         // 検索結果を返す
         const request = {
-            textQuery: query,
-            fields: ['displayName', 'location', 'businessStatus'],
-            includeType: 'spa',
-            useStrictTypeFiltering: true,
-            locationBias: map.center,
-            isOpenNow: true,
+            textQuery: text,
+            fields: ['displayName', 'location', 'types', 'id'],
+            useStrictTypeFiltering: false,
+            locationBias: map.getBounds(),
             language: 'ja',
             maxResultCount: 8,
             minRating: 1,
-            region: 'ja',
+            region: 'jp',
         };
-
         const { places } = await Place.searchByText(request);
         if(places.length){
-            const { LatLngBounds } = (await google.amps.importLibrary('core'));
+            const { LatLngBounds } = (await google.maps.importLibrary('core'));
             const bounds = new LatLngBounds();for ( const id in markers){
             markers[id].map = null;
         }
@@ -83,6 +96,7 @@ export async function initSearching(map) {
     else {
         alert("施設が見つからないかエラーが発生しました");
     }
+}
 }
 
 async function updateInfoWindow(title, content, anchor) {
