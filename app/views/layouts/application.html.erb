@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=places" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY'] %>&libraries=places&v=weekly&map_ids=cac63ff0630d2864a092bd4c defer"></script>
     <%= javascript_importmap_tags %>
     <%= yield(:google_map_js) %>
     <%= yield(:sauna_button_js) %>
     <%= csrf_meta_tags %>
-    
+
     <%= csp_meta_tag %>
 
     <%= yield :head %>
@@ -34,7 +34,7 @@
       <div class="flex flex-1 overflow-hidden">
         <%= render 'shared/side_bar' %>
       <main class="flex-1 overflow-y-auto">
-        
+
         <%= render 'shared/flash_message' %>
         <%= yield %>
       </main>

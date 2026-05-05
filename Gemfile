@@ -44,7 +44,6 @@ gem "thruster", require: false
   gem "tailwindcss-rails", "~> 3.3.1"
 
   # google_map_apiの導入
-  gem "gmaps4rails"
   gem "geocoder"
   gem "google_places"
 

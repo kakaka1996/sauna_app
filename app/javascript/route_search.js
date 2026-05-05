@@ -17,7 +17,7 @@ export async function culRoute(map) {
     if (!map) return;
     try {
         if (!directionService) directionService = new google.maps.DirectionsService();
-        if (!directionRenderer) directionRenderer = new google.maps.DirectionsRenderer();
+        if (!directionRenderer) directionRenderer = new google.maps.DirectionsRenderer({ suppressMarkers: true });
         // map を渡して現在地を取得
         const origin = await getCurrentLocationMarker(map);
         console.log('origin coords', origin);
@@ -28,7 +28,7 @@ export async function culRoute(map) {
             alert("先に目的地を検索してください");
             return;
         }
-
+        // ルート検索時の条件設定
         directionService.route({
             origin: origin,
             destination: destination,
@@ -48,7 +48,6 @@ export async function culRoute(map) {
             }
         });
     } catch (error) {
-        console.error('culRoute caught error', error);
         alert('現在地またはルートの取得に失敗しました');
     }
 }

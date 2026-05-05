@@ -6,7 +6,7 @@ let mapInstance = null;
 
 async function startGMap() {
   const mapElement = document.getElementById("map");
-  
+
   if (!mapElement || mapElement.dataset.initialized === "true") return;
 
   let retryCount = 0;
@@ -23,11 +23,10 @@ async function startGMap() {
     mapInstance = new google.maps.Map(mapElement, {
       center: { lat: 35.412715, lng: 136.771715 },
       zoom: 15,
-      styles: [{
-        "featureType": "poi.business",
-        "elementType": "labels.icon",
-        "stylers": [{"visibility": "off"}]
-      }]
+      maxZoom: 17,
+      styles: [
+        { featureType: "poi", stylers: [{ visibility: "off" }] },
+      ],
     });
 
     mapElement.dataset.initialized = "true";

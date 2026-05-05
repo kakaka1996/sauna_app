@@ -1,18 +1,15 @@
 let map;
 
 export async function initMap() {
-    const { Map } = (await google.maps.importLibrary('maps'));
+    const { Map, InfoWindow } = (await google.maps.importLibrary('maps'));
+    const center = { lat: 37.4161493, lng: -122.0812166 };
     map = new Map(document.getElementById('map'), {
-        center: { lat: 35.68114 , lng:139.767061 },
-        zoom: 15,
-        styles:
-            [{
-                "featureType": "poi.business",
-                "elementType": "labels.icon",
-                "stylers": [{"visibility" : "off"}]
-            }]
-        }
-    );
+        center: center,
+        zoom: 11,
+        mapTypeControl: false,
+        mapId: 'cac63ff0630d2864a092bd4c',
+    });
 }
+
 export function getMap() { return map; }
 
