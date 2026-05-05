@@ -21,11 +21,13 @@ async function startGMap() {
 
   try {
     mapInstance = new google.maps.Map(mapElement, {
-  center: { lat: 35.412715, lng: 136.771715 },
-  zoom: 15,
-  maxZoom: 17,
-  mapId: "cac63ff0630d28643d2e8853", 
-});
+      center: { lat: 35.412715, lng: 136.771715 },
+      zoom: 15,
+      maxZoom: 17,
+      styles: [
+        { featureType: "poi", stylers: [{ visibility: "off" }] },
+      ],
+    });
 
     mapElement.dataset.initialized = "true";
 
