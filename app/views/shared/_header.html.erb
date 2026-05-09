@@ -9,9 +9,21 @@
 
     <nav>
       <% if user_signed_in? %>
-        <%= link_to "ログアウト", destroy_user_session_path, 
-            data: { turbo_method: :delete }, 
-            class: "text-sm font-semibold opacity-90 hover:opacity-100 transition-all border-b-2 border-transparent hover:border-white pb-0.5" %>
+        <details class="relative">
+          <summary class="flex items-center gap-1 text-sm font-semibold opacity-90 hover:opacity-100 transition-all cursor-pointer list-none">
+            <%= current_user.name %>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </summary>
+          <div class="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg py-1 z-[9999]">
+            <%= link_to "アカウント編集", edit_user_registration_path,
+                class: "block px-4 py-2 text-sm text-gray-700 hover:bg-sky-50 hover:text-sky-600 transition-colors" %>
+            <%= button_to "ログアウト", destroy_user_session_path,
+                method: :delete,
+                class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-sky-50 hover:text-sky-600 transition-colors bg-transparent border-none cursor-pointer" %>
+          </div>
+        </details>
       <% else %>
         <div class="flex items-center gap-4 sm:gap-6">
           <%= link_to "ログイン", new_user_session_path, data: { turbo: false }, class: "text-sm font-semibold opacity-90 hover:opacity-100 transition-all" %>
