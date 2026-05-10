@@ -24,8 +24,9 @@
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit "ログイン", class: " py-1 px-3  border-2 border-black rounded cursor-pointer transition duration-150 active:scale-95 active:bg-gray-200" %>
+  <div class="actions flex flex-col items-center gap-3">
+    <%= f.submit "ログイン", class: "py-1 px-3 border-2 border-black rounded cursor-pointer transition duration-150 active:scale-95 active:bg-gray-200" %>
+    <%= link_to "パスワードを忘れた場合はこちら", new_user_password_path, class: "text-sm text-gray-500 hover:underline" %>
   </div>
 <% end %>
 
