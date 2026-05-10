@@ -1,8 +1,15 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
     sessions: "users/sessions",
-    registrations: "users/registrations"
+    registrations: "users/registrations",
+    omniauth_callbacks: "users/omniauth_callbacks",
+    passwords: "users/passwords"
   }
+
+  # 開発環境でメール内容をブラウザで確認するためのルート
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "top#explain"
   get "top", to: "top#top"

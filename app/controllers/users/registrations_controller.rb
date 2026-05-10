@@ -1,36 +1,18 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  # before_action :configure_sign_up_params, only: [:create]
-  # before_action :configure_account_update_params, only: [:update]
+  def build_resource(hash = {})
+    hash[:uid] = User.create_unique_string
+    super
+  end
 
-  # GET /resource/sign_up
-  # def new
-  #   super
-  # end
-
-  # POST /resource
-  # def create
-  #   super
-  # end
-
-  # GET /resource/edit
-  # def edit
-  #   super
-  # end
-
-  # PUT /resource
-  # def update
-  #   super
-  # end
-
-  # DELETE /resource
-  # def destroy
-  #   super
-  # end
+  def update_resource(resource, params)
+    return super if params["password"].present?
+    resource.update_without_password(params.except("current_password"))
+  end
 
   def after_sign_in_path_for(resource)
-    top_path # 遷移先のパス
+    top_path
   end
 
   # GET /resource/cancel

@@ -50,6 +50,8 @@ gem "thruster", require: false
   # ログイン機能の導入(そのうち他SNSも採用予定)
   gem "devise", "~> 4.9"
   gem "devise-i18n" # その他画面のi18nは本リリースで
+  gem "omniauth-google-oauth2"
+  gem "omniauth-rails_csrf_protection"
 
   # カレンダー機能の作成
   gem "simple_calendar"
@@ -68,6 +70,8 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  # メール送信内容をブラウザで確認できるようにする
+  gem "letter_opener_web"
 end
 
 group :test do
