@@ -59,6 +59,7 @@ def update
   def post_sauna_log_params
     params.require(:sauna_log).permit(
       :facility, :experience_date, :crowding, :comment, :satisfaction,
+      images: [],
       sauna_sets_attributes: [ :id, :heat_time, :heat_temperature, :water_bath_time, :water_bath_temperature, :rest_time, :_destroy ],
       sauna_meals_attributes: [ :id, :restaurant, :_destroy ]
       )
