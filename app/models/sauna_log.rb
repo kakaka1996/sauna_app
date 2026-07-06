@@ -11,6 +11,9 @@ class SaunaLog < ApplicationRecord
 
   belongs_to :user
 
+  has_many_attached :images
+  validate :images_count_within_limit
+
   has_many :sauna_sets, dependent: :destroy, inverse_of: :sauna_log
     accepts_nested_attributes_for :sauna_sets, allow_destroy: true, reject_if: :all_blank, limit: 4
   has_many :sauna_meals, dependent: :destroy, inverse_of: :sauna_log
@@ -21,6 +24,10 @@ class SaunaLog < ApplicationRecord
   end
 
   private
+
+  def images_count_within_limit
+    errors.add(:images, "は最大3枚までアップロードできます") if images.count > 3
+  end
 
   def at_least_one_sauna_set
     # sauna_sets が空、またはすべて削除マーク（_destroy）がついている場合にエラーを追加

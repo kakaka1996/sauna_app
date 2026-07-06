@@ -127,4 +127,24 @@
       <%= f.text_area :comment, rows: 4, class: "w-full border-2 border-black p-2 rounded-md focus:ring-2 focus:ring-indigo-500 outline-none bg-white" %>
     </div>
   </div>
+
+  <%# 画像アップロード %>
+  <div class="mt-8 space-y-4 bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+    <h2 class="text-lg font-bold text-gray-800">写真（最大3枚）</h2>
+
+    <% if sauna.persisted? && sauna.images.attached? %>
+      <div class="flex flex-wrap gap-3 mb-3">
+        <% sauna.images.each do |image| %>
+          <div class="relative">
+            <%= image_tag image.variant(resize_to_limit: [200, 200]), class: "w-24 h-24 object-cover rounded-lg border border-gray-300" %>
+          </div>
+        <% end %>
+      </div>
+      <p class="text-xs text-gray-500 mb-2">新たに画像を選択すると追加されます（合計3枚まで）</p>
+    <% end %>
+
+    <%= f.file_field :images, multiple: true, accept: "image/*",
+        class: "block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" %>
+    <p class="text-xs text-gray-400">JPEG・PNG・GIF 対応</p>
+  </div>
 </div>

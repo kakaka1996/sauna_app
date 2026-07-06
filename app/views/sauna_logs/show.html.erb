@@ -6,6 +6,18 @@
   </div>
 
  
+  <%# 写真 %>
+  <% if @sauna.images.attached? %>
+    <section class="space-y-3">
+      <h2 class="text-xl font-bold border-l-4 border-green-500 pl-3">写真</h2>
+      <div class="flex flex-wrap gap-3">
+        <% @sauna.images.each do |image| %>
+          <%= image_tag image.variant(resize_to_limit: [400, 400]), class: "w-full sm:w-auto sm:h-48 object-cover rounded-2xl border border-gray-200 shadow-sm" %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
   <%# サウナセットの記録 %>
   <section class="space-y-4">
     <h2 class="text-xl font-bold border-l-4 border-blue-500 pl-3">サウナセット</h2>
