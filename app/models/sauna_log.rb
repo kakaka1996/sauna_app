@@ -11,6 +11,8 @@ class SaunaLog < ApplicationRecord
 
   belongs_to :user
 
+  scope :publicly_visible, -> { where(is_public: true) }
+
   has_many_attached :images
   validate :images_count_within_limit
 
