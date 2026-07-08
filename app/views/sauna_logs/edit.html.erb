@@ -6,7 +6,14 @@
   <h1 class="text-2xl font-bold mb-6">サウナ記録の編集</h1>
   <%= form_with model: @sauna, class: "w-full space-y-8" do |f| %>
     <%= render 'form', f: f, sauna: @sauna %>
-    <div class="mt-10 pb-10 text-center">
+    <div class="bg-gray-50 p-6 rounded-xl border-2 border-gray-200">
+      <label class="flex items-center gap-3 cursor-pointer">
+        <%= f.check_box :is_public, class: "w-5 h-5 accent-blue-500 cursor-pointer" %>
+        <span class="font-bold text-gray-700">この記録を公開する</span>
+      </label>
+      <p class="text-xs text-gray-400 mt-2 ml-8">チェックを入れると他のユーザーも閲覧できます</p>
+    </div>
+    <div class="mt-4 pb-10 text-center">
       <%= f.submit '更新する', class: "w-full md:w-2/3 py-4 bg-blue-600 text-white font-extrabold text-xl rounded-full shadow-xl" %>
     </div>
   <% end %>

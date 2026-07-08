@@ -1,7 +1,12 @@
 class SaunaLogsController < ApplicationController
   before_action :authenticate_user!
+
   def index
-    @saunas = SaunaLog.all
+    @saunas = current_user.sauna_logs
+  end
+
+  def feed
+    @saunas = SaunaLog.publicly_visible.includes(:user).order(created_at: :desc)
   end
 
   def new
@@ -10,8 +15,11 @@ class SaunaLogsController < ApplicationController
     1.times { @post_sauna_log.sauna_meals.build }
   end
 
-   def show
-    @sauna = current_user.sauna_logs.find_by(id: params[:id])
+  def show
+    @sauna = SaunaLog.find_by(id: params[:id])
+    unless @sauna&.is_public? || @sauna&.user == current_user
+      redirect_to sauna_logs_path, alert: "この記録は非公開です"
+    end
   end
 
 
@@ -58,7 +66,7 @@ def update
 
   def post_sauna_log_params
     params.require(:sauna_log).permit(
-      :facility, :experience_date, :crowding, :comment, :satisfaction,
+      :facility, :experience_date, :crowding, :comment, :satisfaction, :is_public,
       images: [],
       sauna_sets_attributes: [ :id, :heat_time, :heat_temperature, :water_bath_time, :water_bath_temperature, :rest_time, :_destroy ],
       sauna_meals_attributes: [ :id, :restaurant, :_destroy ]

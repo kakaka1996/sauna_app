@@ -1,0 +1,38 @@
+<div class="max-w-2xl mx-auto p-4 space-y-6">
+  <h1 class="text-2xl font-bold text-gray-800">みんなのサウナ記録</h1>
+
+  <% if @saunas.empty? %>
+    <div class="text-center py-16 text-gray-400">
+      <p class="text-lg">まだ公開された記録がありません</p>
+    </div>
+  <% else %>
+    <% @saunas.each do |sauna| %>
+      <%= link_to sauna_log_path(sauna), class: "block bg-white border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow" do %>
+        <div class="flex justify-between items-start mb-3">
+          <div>
+            <h2 class="text-lg font-bold text-gray-800"><%= sauna.facility %></h2>
+            <p class="text-sm text-gray-400"><%= sauna.experience_date.strftime("%Y年%m月%d日") %></p>
+          </div>
+          <span class="text-xs font-semibold text-gray-500 bg-gray-100 px-2 py-1 rounded-full"><%= sauna.user.name %></span>
+        </div>
+
+        <div class="flex gap-4 text-sm mb-3">
+          <span class="text-blue-600 font-bold">★ 満足度 <%= sauna.satisfaction %>/5</span>
+          <span class="text-orange-500 font-bold">混雑度 <%= sauna.crowding %>/5</span>
+        </div>
+
+        <% if sauna.comment.present? %>
+          <p class="text-sm text-gray-600 line-clamp-2"><%= sauna.comment %></p>
+        <% end %>
+
+        <% if sauna.images.attached? %>
+          <div class="flex gap-2 mt-3">
+            <% sauna.images.first(3).each do |image| %>
+              <%= image_tag image.variant(resize_to_limit: [120, 120]), class: "w-16 h-16 object-cover rounded-lg border border-gray-200" %>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>
