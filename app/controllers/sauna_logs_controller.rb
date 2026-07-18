@@ -6,7 +6,16 @@ class SaunaLogsController < ApplicationController
   end
 
   def feed
-    @saunas = SaunaLog.publicly_visible.includes(:user).order(created_at: :desc)
+    @saunas = SaunaLog.publicly_visible.includes(:user, :likes).order(created_at: :desc)
+    @current_user_likes = current_user.likes.where(sauna_log: @saunas).index_by(&:sauna_log_id)
+  end
+
+  def liked
+    @saunas = SaunaLog.joins(:likes)
+                      .where(likes: { user: current_user })
+                      .includes(:user, :likes)
+                      .order("likes.created_at DESC")
+    @current_user_likes = current_user.likes.where(sauna_log: @saunas).index_by(&:sauna_log_id)
   end
 
   def new

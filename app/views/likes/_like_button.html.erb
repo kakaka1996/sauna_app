@@ -1,0 +1,11 @@
+<% if like %>
+  <%= button_to like_path(like), method: :delete,
+      class: "flex items-center gap-1 text-orange-500 font-bold text-sm transition-colors hover:text-orange-600" do %>
+    <span class="text-lg">♨️</span><span><%= sauna_log.likes.size %></span>
+  <% end %>
+<% else %>
+  <%= button_to likes_path(sauna_log_id: sauna_log.id), method: :post,
+      class: "flex items-center gap-1 text-gray-400 font-bold text-sm transition-colors hover:text-orange-500" do %>
+    <span class="text-lg">♨️</span><span><%= sauna_log.likes.size %></span>
+  <% end %>
+<% end %>

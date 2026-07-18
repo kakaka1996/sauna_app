@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   }
 
   # 開発環境でメール内容をブラウザで確認するためのルート
-  if Rails.env.development?
+  if Rails.env.development? && defined?(LetterOpenerWeb)
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -23,8 +23,10 @@ Rails.application.routes.draw do
   resources :sauna_logs, only: %i[index new create edit show update destroy] do
     collection do
       get :feed
+      get :liked
     end
   end
+  resources :likes, only: %i[create destroy]
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

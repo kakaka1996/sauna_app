@@ -1,0 +1,3 @@
+<%= turbo_stream.update "like_#{@sauna_log.id}" do %>
+  <%= render 'likes/like_button', sauna_log: @sauna_log, like: @like %>
+<% end %>
