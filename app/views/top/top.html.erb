@@ -2,6 +2,12 @@
     <%= javascript_import_module_tag "google_map" %>
 <% end %>
 
+<% if user_signed_in? %>
+  <div id="favorites_data"
+       data-favorites="<%= current_user.favorite_facilities.pluck(:place_id, :id, :name).map { |pid, id, n| { place_id: pid, id: id, name: n } }.to_json %>"
+       class="hidden"></div>
+<% end %>
+
 <div class="relative">
     <div id="map" style="height: 600px; width: 100%;" class="rounded-xl shadow-inner"></div>
     <div id="route_info_panel" class="hidden absolute top-3 right-3 z-10">

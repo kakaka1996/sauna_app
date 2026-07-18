@@ -7,8 +7,67 @@ let infoWindow = null;
 let markers = {};
 let destinationLatLng = null;
 
+// お気に入り管理: { place_id => db_id }
+let activeFavorites = {};
+
+function initFavorites() {
+    const el = document.getElementById("favorites_data");
+    if (!el) return;
+    try {
+        const data = JSON.parse(el.dataset.favorites || "[]");
+        activeFavorites = {};
+        data.forEach(f => { activeFavorites[f.place_id] = f.id; });
+    } catch (e) {
+        activeFavorites = {};
+    }
+}
+
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+}
+
+async function toggleFavorite(btn) {
+    const placeId = btn.dataset.placeId;
+    const placeName = btn.dataset.placeName;
+    const placeAddress = btn.dataset.placeAddress;
+
+    if (activeFavorites[placeId]) {
+        const dbId = activeFavorites[placeId];
+        const res = await fetch(`/favorite_facilities/${dbId}`, {
+            method: 'DELETE',
+            headers: { 'X-CSRF-Token': getCsrfToken(), 'Accept': 'application/json' },
+        });
+        if (res.ok) {
+            delete activeFavorites[placeId];
+            btn.textContent = '☆';
+            btn.classList.remove('text-yellow-400');
+            btn.classList.add('text-gray-300', 'hover:text-yellow-400');
+            btn.title = 'お気に入りに追加';
+        }
+    } else {
+        const res = await fetch('/favorite_facilities', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-Token': getCsrfToken(),
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ place_id: placeId, name: placeName, address: placeAddress }),
+        });
+        if (res.ok) {
+            const data = await res.json();
+            activeFavorites[placeId] = data.id;
+            btn.textContent = '★';
+            btn.classList.add('text-yellow-400');
+            btn.classList.remove('text-gray-300', 'hover:text-yellow-400');
+            btn.title = 'お気に入りから削除';
+        }
+    }
+}
+
 export async function initSearching(map) {
     mapRef = map;
+    initFavorites();
 
     const placeSearch = document.getElementById("place_search");
     const searchExecution = document.getElementById("search_execution");
@@ -128,9 +187,12 @@ function updateResultsList(places) {
 
     list.innerHTML = "";
 
+    const isLoggedIn = !!document.getElementById("favorites_data");
+
     places.forEach((place, index) => {
         const photoUrl = place.photos?.[0]?.getURI({ maxWidth: 120, maxHeight: 80 }) ?? null;
         const website = place.websiteURI ?? null;
+        const isFavorited = !!activeFavorites[place.id];
 
         const nameHtml = website
             ? `<a href="${website}" target="_blank" rel="noopener noreferrer" class="font-bold text-sky-600 hover:underline text-sm truncate block">${place.displayName ?? ""}</a>`
@@ -139,6 +201,16 @@ function updateResultsList(places) {
         const photoHtml = photoUrl
             ? `<img src="${photoUrl}" alt="${place.displayName ?? ""}" class="flex-shrink-0 w-20 h-14 object-cover rounded-md">`
             : `<div class="flex-shrink-0 w-20 h-14 bg-slate-100 rounded-md flex items-center justify-center text-slate-400 text-xs">No photo</div>`;
+
+        const starHtml = isLoggedIn
+            ? `<button class="favorite-btn flex-shrink-0 text-xl leading-none transition-colors ${isFavorited ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-400'}"
+                       data-place-id="${place.id}"
+                       data-place-name="${(place.displayName ?? '').replace(/"/g, '&quot;')}"
+                       data-place-address="${(place.formattedAddress ?? '').replace(/"/g, '&quot;')}"
+                       title="${isFavorited ? 'お気に入りから削除' : 'お気に入りに追加'}">
+                       ${isFavorited ? '★' : '☆'}
+               </button>`
+            : '';
 
         const li = document.createElement("li");
         li.className = "flex items-center gap-3 p-3 rounded-lg hover:bg-sky-50 cursor-pointer transition-colors border border-transparent hover:border-sky-200";
@@ -150,10 +222,15 @@ function updateResultsList(places) {
                 ${nameHtml}
                 <p class="text-xs text-gray-500 mt-0.5 truncate">${place.formattedAddress ?? ""}</p>
             </div>
+            ${starHtml}
         `;
 
         li.addEventListener('click', (e) => {
             if (e.target.closest('a')) return;
+            if (e.target.closest('.favorite-btn')) {
+                toggleFavorite(e.target.closest('.favorite-btn'));
+                return;
+            }
             const marker = markers[place.id];
             if (marker && place.location) {
                 mapRef.panTo(place.location);
