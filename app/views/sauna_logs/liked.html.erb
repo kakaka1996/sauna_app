@@ -1,9 +1,10 @@
 <div class="max-w-2xl mx-auto p-4 space-y-6">
-  <h1 class="text-2xl font-bold text-gray-800">みんなのサウナ記録</h1>
+  <h1 class="text-2xl font-bold text-gray-800">♨️ いいねした記録</h1>
 
   <% if @saunas.empty? %>
     <div class="text-center py-16 text-gray-400">
-      <p class="text-lg">まだ公開された記録がありません</p>
+      <p class="text-lg">まだいいねした記録がありません</p>
+      <%= link_to "みんなの記録を見る", feed_sauna_logs_path, class: "mt-4 inline-block text-sm text-blue-500 hover:underline" %>
     </div>
   <% else %>
     <% @saunas.each do |sauna| %>

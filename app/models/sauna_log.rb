@@ -13,6 +13,8 @@ class SaunaLog < ApplicationRecord
 
   scope :publicly_visible, -> { where(is_public: true) }
 
+  has_many :likes, dependent: :destroy
+
   has_many_attached :images
   validate :images_count_within_limit
 
