@@ -1,6 +1,7 @@
 // 近くのレストランと道順の検索機能のimport
 import { searchNearRestaurant, clearRestaurantMarkers } from "near_search"
 import { directionRenderer } from "route_search"
+import { initAutocomplete } from "autocomplete"
 
 let mapRef = null;
 let infoWindow = null;
@@ -98,17 +99,20 @@ export async function initSearching(map) {
     const panel = document.getElementById("route_info_panel");
     if (panel) panel.classList.add("hidden");
 
+    initAutocomplete((selectedText) => {
+        findPlaces(selectedText);
+    });
+
     async function findPlaces(query) {
         const { Place } = await google.maps.importLibrary('places');
 
         let text = query.trim();
-        if (!text.includes("サウナ") && !text.includes("銭湯")) {
+        if (!text.includes("サウナ") && !text.includes("銭湯") && !text.includes("温浴")) {
             text = `${text} サウナ`;
         }
         const request = {
             textQuery: text,
             fields: ['displayName', 'location', 'types', 'id', 'formattedAddress', 'photos', 'websiteURI'],
-            useStrictTypeFiltering: false,
             language: 'ja',
             maxResultCount: 8,
             region: 'jp',
