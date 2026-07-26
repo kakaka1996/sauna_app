@@ -1,12 +1,26 @@
 
 <% if user_signed_in? %>
-    <aside class="w-40 bg-black text-white p-6 min-h-screen flex-shrink-0">
-        <nav class="flex flex-col gap-4">
-            <%= link_to "検索", top_path %>
-            <%= link_to "★ お気に入り", favorite_facilities_path %>
-            <%= link_to "サウナ記録", sauna_logs_path %>
-            <%= link_to "みんなの記録", feed_sauna_logs_path %>
-            <%= link_to "♨️ いいね", liked_sauna_logs_path %>
-        </nav>
-    </aside>
+    <div data-sidebar-target="panel" class="hidden fixed inset-0 z-40">
+        <div class="absolute inset-0 bg-slate-900/40 animate-fade-in" data-action="click->sidebar#close"></div>
+
+        <aside class="absolute top-0 left-0 h-full w-64 max-w-[80vw] bg-white shadow-2xl flex flex-col animate-slide-in-left">
+            <div class="flex items-center justify-between px-5 py-4 bg-sky-300 text-white shrink-0">
+                <span class="text-lg font-black tracking-tight">メニュー</span>
+                <button type="button" data-action="sidebar#close" aria-label="メニューを閉じる"
+                    class="flex items-center justify-center w-8 h-8 rounded-md hover:bg-white/20 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="flex flex-col gap-1 p-4">
+                <%= link_to top_path, class: "px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:bg-sky-50 hover:text-sky-600 transition-colors" do %>検索<% end %>
+                <%= link_to favorite_facilities_path, class: "px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:bg-sky-50 hover:text-sky-600 transition-colors" do %>★ お気に入り<% end %>
+                <%= link_to sauna_logs_path, class: "px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:bg-sky-50 hover:text-sky-600 transition-colors" do %>サウナ記録<% end %>
+                <%= link_to feed_sauna_logs_path, class: "px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:bg-sky-50 hover:text-sky-600 transition-colors" do %>みんなの記録<% end %>
+                <%= link_to liked_sauna_logs_path, class: "px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-600 hover:bg-sky-50 hover:text-sky-600 transition-colors" do %>♨️ いいね<% end %>
+            </nav>
+        </aside>
+    </div>
 <% end %>

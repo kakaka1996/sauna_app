@@ -35,13 +35,18 @@ class SaunaLogsController < ApplicationController
   def create
     @post_sauna_log = current_user.sauna_logs.build(post_sauna_log_params)
     @post_sauna_log.user_id = current_user.id
+    new_images = uploaded_images
+
+    if new_images.size > 3
+      @post_sauna_log.errors.add(:images, "は最大3枚までアップロードできます")
+      return render_new_unprocessable
+    end
+
     if @post_sauna_log.save
+      @post_sauna_log.images.attach(new_images) if new_images.any?
       redirect_to sauna_log_path(@post_sauna_log), notice: "記録が完了しました"
     else
-      remaining_sets = 4 - @post_sauna_log.sauna_sets.size
-      remaining_sets.times { @post_sauna_log.sauna_sets.build } if remaining_sets > 0
-      @post_sauna_log.sauna_meals.build if @post_sauna_log.sauna_meals.blank?
-      render :new,  status: :unprocessable_entity
+      render_new_unprocessable
     end
   end
 
@@ -64,8 +69,19 @@ class SaunaLogsController < ApplicationController
 
 def update
     @sauna = current_user.sauna_logs.find(params[:id])
+    removed_ids = removed_image_ids
+    new_images = uploaded_images
+    remaining_count = @sauna.images.map(&:id).count { |id| !removed_ids.include?(id) }
+
+    if remaining_count + new_images.size > 3
+      @sauna.errors.add(:images, "は最大3枚までアップロードできます")
+      return render :edit, status: :unprocessable_entity
+    end
+
+    purge_removed_images(@sauna, removed_ids)
 
     if @sauna.update(post_sauna_log_params)
+      @sauna.images.attach(new_images) if new_images.any?
       redirect_to sauna_log_path(@sauna), notice: "記録を更新しました"
     else
       render :edit, status: :unprocessable_entity
@@ -73,10 +89,30 @@ def update
   end
 
 
+  def render_new_unprocessable
+    remaining_sets = 4 - @post_sauna_log.sauna_sets.size
+    remaining_sets.times { @post_sauna_log.sauna_sets.build } if remaining_sets > 0
+    @post_sauna_log.sauna_meals.build if @post_sauna_log.sauna_meals.blank?
+    render :new, status: :unprocessable_entity
+  end
+
+  def uploaded_images
+    Array(params.dig(:sauna_log, :images)).reject(&:blank?)
+  end
+
+  def removed_image_ids
+    Array(params.dig(:sauna_log, :remove_image_ids)).reject(&:blank?).map(&:to_i)
+  end
+
+  def purge_removed_images(sauna, ids)
+    return if ids.empty?
+
+    sauna.images.each { |image| image.purge if ids.include?(image.id) }
+  end
+
   def post_sauna_log_params
     params.require(:sauna_log).permit(
       :facility, :experience_date, :crowding, :comment, :satisfaction, :is_public,
-      images: [],
       sauna_sets_attributes: [ :id, :heat_time, :heat_temperature, :water_bath_time, :water_bath_temperature, :rest_time, :_destroy ],
       sauna_meals_attributes: [ :id, :restaurant, :_destroy ]
       )
