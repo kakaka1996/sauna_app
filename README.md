@@ -60,5 +60,4 @@ simple-calender(記録作成時のカレンダー機能)
 rails -18n 言語化
 carrywave(画像アップロード)
 Google Places API
-OpenWeatherMap API　天気予報（天気と気温）
 画面遷移図URL https://www.figma.com/design/5pwI2LirnXEv859I93vsX3/Figma%E3%81%AE%E5%9F%BA%E6%9C%AC---Figma-Basics-%E6%97%A5%E6%9C%AC%E8%AA%9E%E7%89%88--Community-?node-id=1502-2&p=f&t=krnbq4u01dk2L6F5-0
