@@ -135,12 +135,16 @@
     <% if sauna.persisted? && sauna.images.attached? %>
       <div class="flex flex-wrap gap-3 mb-3">
         <% sauna.images.each do |image| %>
-          <div class="relative">
+          <div class="relative w-24">
             <%= image_tag image.variant(resize_to_limit: [200, 200]), class: "w-24 h-24 object-cover rounded-lg border border-gray-300" %>
+            <label class="mt-1 flex items-center justify-center gap-1 text-[10px] font-bold text-red-600 cursor-pointer">
+              <%= check_box_tag "sauna_log[remove_image_ids][]", image.id, false %>
+              削除
+            </label>
           </div>
         <% end %>
       </div>
-      <p class="text-xs text-gray-500 mb-2">新たに画像を選択すると追加されます（合計3枚まで）</p>
+      <p class="text-xs text-gray-500 mb-2">「削除」にチェックして保存すると、その写真が削除されます。新たに画像を選択すると追加されます（合計3枚まで）</p>
     <% end %>
 
     <%= f.file_field :images, multiple: true, accept: "image/*",

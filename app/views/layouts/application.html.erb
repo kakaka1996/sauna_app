@@ -27,18 +27,16 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
 
   </head>
-  <body class="flex flex-col min-h-screen">
+  <body class="flex flex-col min-h-screen" data-controller="sidebar">
     <%= render 'shared/header' %>
 
-    <% if user_signed_in? %>
-      <div class="flex flex-1 overflow-hidden">
-        <%= render 'shared/side_bar' %>
-      <main class="flex-1 overflow-y-auto">
+    <%= render 'shared/side_bar' %>
 
+    <% if user_signed_in? %>
+      <main class="flex-1 overflow-y-auto">
         <%= render 'shared/flash_message' %>
         <%= yield %>
       </main>
-      </div>
     <% else %>
     <%= render 'shared/flash_message' %>
       <main class="flex-grow">
