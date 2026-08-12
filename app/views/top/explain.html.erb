@@ -8,21 +8,34 @@
         </div>
     </div>
 
-    <div class="py-20">
-        <div class="flex flex-col max-w-2xl item-center mx-auto text-left gap-y-6 " >
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-center ">
+    <div class="py-40">
+        <div class="flex flex-col max-w-2xl item-center mx-auto gap-y-6 " >
+            <div class="bg-white p-8 rounded-2xl shadow-sm border text-left border-slate-100 flex flex-col justify-center ">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="icon icon-tabler icons-tabler-filled icon-tabler-map-pin"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18.364 4.636a9 9 0 0 1 .203 12.519l-.203 .21l-4.243 4.242a3 3 0 0 1 -4.097 .135l-.144 -.135l-4.244 -4.243a9 9 0 0 1 12.728 -12.728zm-6.364 3.364a3 3 0 1 0 0 6a3 3 0 0 0 0 -6" /></svg>
-                <h3 class="text-xl font-bold mb-3">スマートな施設検索</h3>
-                <p class="text-slate-600 leading-relaxed text-sm">施設名を入れるだけで、あなたの目的地が決まります。<br><span class="text-[10px] text-slate-400">
+                <h3 class="text-xl font-bold  mb-3">スマートな施設検索</h3>
+                <p class="text-slate-600 leading-relaxed text-sm">施設名を入れるだけで、あなたの目的地が決まります。</p>
+                <label for="modal" class="block w-fit">
+                    <%= image_tag 'find_sauna.png' %>
+                </label>
+                <input type="checkbox" id="modal" class="hidden peer" />
+                <div class="hidden peer-checked:block fixed inset-0 z-50">
+                    <label for="modal" class="block w-full h-full bg-black/70">
+                        <label class="block w-3/4 mx-auto mt-20">
+                            <%= image_tag 'find_sauna.png' %>
+                        </label>
+                    </label>
+                </div>
             </div>
 
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col  justify-center">
-                <h3 class="text-xl font-bold mb-3">周辺のサウナ飯検索</h3>
+                <h3 class="text-xl font-bold  mb-3">周辺のサウナ飯検索</h3>
                 <p class="text-slate-600 leading-relaxed text-sm">ととのった後の楽しみも逃しません。サウナ施設周辺の飲食店も同時に検索。最高の締めくくりをサポートします。</p>
+                <%= image_tag 'find_restaurant.png' %>
             </div>
             <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col  justify-center">
-                <h3 class="text-xl font-bold mb-3">サウナ記録カレンダー</h3>
+                <h3 class="text-xl font-bold text-left mb-3">サウナ記録カレンダー</h3>
                 <p class="text-slate-600 leading-relaxed text-sm">いつ、どこで整ったかをカレンダーに記録。日々のサウナ活動を可視化することで、あなたのサ活とモチベーションを支えます。</p>
+                <%= image_tag 'sauna_calender.png' %>
             </div>
         </div>
     </div>
