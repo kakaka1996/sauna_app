@@ -1,3 +1,4 @@
+<%= yield(:animation_js) %>
 <div class="min-h-screen bg-slate-50 font-sans text-slate-900">
 
     <div class="relative bg-sky-600 py-20 px-6 text-center text-white">
@@ -5,25 +6,71 @@
             <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-4">最高の「ととのい」まで、<br class="sm:hidden">最短ルートで。</h1>
             <p class="text-lg md:text-xl text-sky-100 mb-10 max-w-2xl mx-auto">SaunaDayは、サウナ施設だけでなく周辺のサウナ飯まで検索できます。また、その日の記録もカレンダーに刻める、サウナーのためのオールインワンアプリです。</p>
             <%= link_to '今すぐサウナを探す', top_path, class: "inline-block bg-white text-sky-600 px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:bg-sky-50 transition-all active:scale-95" %>
+        </div>
     </div>
 
-<div class="py-20 px-6">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
-        <div class="w-12 h-1 bg-sky-500 mb-6"></div>
-            <h3 class="text-xl font-bold mb-3">スマートな施設検索</h3>
-            <p class="text-slate-600 leading-relaxed text-sm">施設名を入れるだけで、あなたの目的地が決まります。<br><span class="text-[10px] text-slate-400">※現在は施設名の検索のみの対応となっております。あいまい検索への対応は後日となります。</span></p>
-        </div>
-
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
-            <div class="w-12 h-1 bg-orange-500 mb-6"></div>
-                <h3 class="text-xl font-bold mb-3">周辺のサウナ飯検索</h3>
-                <p class="text-slate-600 leading-relaxed text-sm">ととのった後の楽しみも逃しません。サウナ施設周辺の飲食店も同時に検索。最高の締めくくりをサポートします。</p>
-            </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 flex flex-col">
-                    <div class="w-12 h-1 bg-emerald-500 mb-6"></div>
-                    <h3 class="text-xl font-bold mb-3">サウナ記録カレンダー</h3>
-                    <p class="text-slate-600 leading-relaxed text-sm">いつ、どこで整ったかをカレンダーに記録。日々のサウナ活動を可視化することで、あなたのサ活とモチベーションを支えます。</p>
+    <div class="py-40">
+        <div class="flex flex-col max-w-lg item-center mx-auto gap-y-6 " >
+            <div class="fade-in-item bg-white p-8 rounded-2xl shadow-sm border text-center border-slate-100 flex flex-col justify-center ">
+                <div class="relative w-11 h-11">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin bg-sky-50 rounded-full p-3"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-zoom bg-sky-600 rounded-full p-1 absolute bottom-0 right-0"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
+                </div>
+                <h3 class="text-xl font-bold  mb-3">スマートな施設検索</h3>
+                </h3>
+                <p class="text-slate-600 leading-relaxed text-sm">施設名を入れるだけで、あなたの目的地が決まります。</p>
+                <label for="modal-top" class="block w-20 h-20 hover:cursor-pointer">
+                    <%= image_tag 'find_sauna.png' %>
+                </label>
+                <input type="checkbox" id="modal-top" class="hidden peer" />
+                <div class="hidden peer-checked:block fixed inset-0 z-50">
+                    <label for="modal-top" class="block w-full h-full bg-black/70">
+                        <label class="block w-3/4 mx-auto mt-20">
+                            <%= image_tag 'find_sauna.png' %>
+                        </label>
+                    </label>
                 </div>
             </div>
+
+            <div class="fade-in-item bg-white p-8 rounded-2xl shadow-sm border text-center border-slate-100 flex flex-col justify-center ">
+                <div class="relative w-11 h-11">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-tools-kitchen-2 bg-sky-50 rounded-full p-3"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12m0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-pin bg-sky-600 rounded-full p-1 absolute bottom-0 right-0"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0" /></svg>
+                </div>
+                <h3 class="text-xl font-bold  mb-3">周辺のサウナ飯検索</h3>
+                <p class="text-slate-600 leading-relaxed text-sm">ととのった後の楽しみも逃しません。サウナ施設周辺の飲食店も同時に検索。最高の締めくくりをサポートします。</p>
+                <label for="modal-middle" class="block w-20 h-20 hover:cursor-pointer">
+                    <%= image_tag 'find_restaurant.png' %>
+                </label>
+                <input type="checkbox" id="modal-middle" class="hidden peer" />
+                <div class="hidden peer-checked:block fixed inset-0 z-50">
+                    <label for="modal-middle" class="block w-full h-full bg-black/70">
+                        <label class="block w-3/4 mx-auto mt-20">
+                            <%= image_tag 'find_restaurant.png' %>
+                        </label>
+                    </label>
+                </div>
+            </div>
+
+            <div class=" fade-in-item bg-white p-8 rounded-2xl shadow-sm border text-center border-slate-100 flex flex-col justify-center ">
+                <div class="relative w-11 h-11">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" bg-sky-50 viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-calendar-week bg-sky-50 rounded-full p-3"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12" /><path d="M16 3v4" /><path d="M8 3v4" /><path d="M4 11h16" /><path d="M7 14h.013" /><path d="M10.01 14h.005" /><path d="M13.01 14h.005" /><path d="M16.015 14h.005" /><path d="M13.015 17h.005" /><path d="M7.01 17h.005" /><path d="M10.01 17h.005" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-flame bg-sky-600 rounded-full p-1 absolute bottom-0 right-0"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 10.941c2.333 -3.308 .167 -7.823 -1 -8.941c0 3.395 -2.235 5.299 -3.667 6.706c-1.43 1.408 -2.333 3.294 -2.333 5.588c0 3.704 3.134 6.706 7 6.706c3.866 0 7 -3.002 7 -6.706c0 -1.712 -1.232 -4.403 -2.333 -5.588c-2.084 3.353 -3.257 3.353 -4.667 2.235" /></svg>
+                </div>
+                <h3 class="text-xl font-bold  mb-3">サウナ記録カレンダー</h3>
+                <p class="text-slate-600 leading-relaxed text-sm">いつ、どこで整ったかをカレンダーに記録。日々のサウナ活動を可視化することで、あなたのサ活とモチベーションを支えます。</p>
+                <label for="modal-bottom" class="block w-20 h-20 hover:cursor-pointer">
+                    <%= image_tag 'sauna_calender.png' %>
+                </label>
+                <input type="checkbox" id="modal-bottom" class="hidden peer" />
+                <div class="hidden peer-checked:block fixed inset-0 z-50">
+                    <label for="modal-bottom" class="block w-full h-full bg-black/70">
+                        <label class="block w-3/4 mx-auto mt-20">
+                            <%= image_tag 'sauna_calender.png' %>
+                        </label>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
