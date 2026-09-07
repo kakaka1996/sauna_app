@@ -1,8 +1,15 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
 
+
   def create
     @sauna_log = SaunaLog.find(params[:sauna_log_id])
+
+    unless @sauna_log.is_public?
+      redirect_back fallback_location: feed_sauna_logs_path, alert: "非公開の投稿にはいいねできません"
+      return
+    end
+
     @like = current_user.likes.find_or_create_by(sauna_log: @sauna_log)
     respond_to do |format|
       format.turbo_stream
