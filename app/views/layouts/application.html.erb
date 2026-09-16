@@ -27,7 +27,9 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
 
   </head>
+  <%= yield(:modal) %>
   <body class="flex flex-col min-h-screen" data-controller="sidebar">
+
     <%= render 'shared/header' %>
 
     <%= render 'shared/side_bar' %>
