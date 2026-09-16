@@ -17,20 +17,22 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-zoom bg-sky-600 rounded-full p-1 absolute bottom-0 right-0"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" /><path d="M21 21l-6 -6" /></svg>
                 </div>
                 <h3 class="text-xl font-bold  mb-3">スマートな施設検索</h3>
-                </h3>
                 <p class="text-slate-600 leading-relaxed text-sm">施設名を入れるだけで、あなたの目的地が決まります。</p>
                 <label for="modal-top" class="block w-20 h-20 hover:cursor-pointer">
                     <%= image_tag 'find_sauna.png' %>
                 </label>
-                <input type="checkbox" id="modal-top" class="hidden peer" />
-                <div class="hidden peer-checked:block fixed inset-0 z-50">
+            </div>
+
+            <% content_for(:modal) do %>
+            <input type="checkbox" id="modal-top" class="hidden peer/top" />
+                <div class="hidden peer-checked/top:block fixed inset-0 z-50">
                     <label for="modal-top" class="block w-full h-full bg-black/70">
-                        <label class="block w-3/4 mx-auto mt-20">
+                        <label class="block w-3/4 mx-auto pt-20">
                             <%= image_tag 'find_sauna.png' %>
                         </label>
                     </label>
                 </div>
-            </div>
+            <% end %>
 
             <div class="fade-in-item bg-white p-8 rounded-2xl shadow-sm border text-center border-slate-100 flex flex-col justify-center ">
                 <div class="relative w-11 h-11">
@@ -42,15 +44,18 @@
                 <label for="modal-middle" class="block w-20 h-20 hover:cursor-pointer">
                     <%= image_tag 'find_restaurant.png' %>
                 </label>
-                <input type="checkbox" id="modal-middle" class="hidden peer" />
-                <div class="hidden peer-checked:block fixed inset-0 z-50">
+            </div>
+
+            <% content_for(:modal) do %>
+            <input type="checkbox" id="modal-middle" class="hidden peer/middle" />
+                <div class="hidden peer-checked/middle:block fixed inset-0 z-50">
                     <label for="modal-middle" class="block w-full h-full bg-black/70">
-                        <label class="block w-3/4 mx-auto mt-20">
+                        <label class="block w-3/4 mx-auto pt-20">
                             <%= image_tag 'find_restaurant.png' %>
                         </label>
                     </label>
                 </div>
-            </div>
+            <% end %>
 
             <div class=" fade-in-item bg-white p-8 rounded-2xl shadow-sm border text-center border-slate-100 flex flex-col justify-center ">
                 <div class="relative w-11 h-11">
@@ -62,14 +67,17 @@
                 <label for="modal-bottom" class="block w-20 h-20 hover:cursor-pointer">
                     <%= image_tag 'sauna_calender.png' %>
                 </label>
+                </div>
+                <% content_for(:modal) do %>
                 <input type="checkbox" id="modal-bottom" class="hidden peer" />
                 <div class="hidden peer-checked:block fixed inset-0 z-50">
                     <label for="modal-bottom" class="block w-full h-full bg-black/70">
-                        <label class="block w-3/4 mx-auto mt-20">
+                        <label class="block w-3/4 mx-auto pt-20">
                             <%= image_tag 'sauna_calender.png' %>
                         </label>
                     </label>
                 </div>
+                <% end %>
             </div>
         </div>
     </div>
