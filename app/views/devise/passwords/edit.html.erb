@@ -1,22 +1,24 @@
-<h2 class="flex flex-col place-items-center mt-20 font-bold">パスワードの再設定</h2>
+<!--入力フォーム見出し、　コンテナ　入力欄　はapplication.tailwind.cssで管理 -->
 
-<div class="flex flex-col items-center mx-auto">
+<h2 class="form_title">パスワードの再設定</h2>
+
+<div class="input_container">
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }, data: { turbo: false }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
   <%= f.hidden_field :reset_password_token %>
 
-  <div class="container flex flex-col items-center mx-auto">
+  <div class="container input_container">
     <div class="field mb-5">
       <%= f.label :password, '新しいパスワード' %><br />
       <% if @minimum_password_length %>
         <span class="text-xs text-gray-500"><%= @minimum_password_length %>文字以上</span><br />
       <% end %>
-      <%= f.password_field :password, autofocus: true, class: "border-2 border-black mt-3", autocomplete: "new-password" %>
+      <%= f.password_field :password, autofocus: true, class: "input_form", autocomplete: "new-password" %>
     </div>
 
     <div class="field mb-5">
       <%= f.label :password_confirmation, '新しいパスワード（確認）' %><br />
-      <%= f.password_field :password_confirmation, class: "border-2 border-black mt-3", autocomplete: "new-password" %>
+      <%= f.password_field :password_confirmation, class: "input_form", autocomplete: "new-password" %>
     </div>
 
     <div class="actions flex items-center gap-4">

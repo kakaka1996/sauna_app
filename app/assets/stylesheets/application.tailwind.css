@@ -11,6 +11,21 @@
 }
 
 */
+@layer components {
+  /*アカウント入力フォームの共通部分のクラス化*/
+  .form_title{
+    @apply flex flex-col place-items-center mt-20 font-bold
+  }
+
+  .input_container{
+    @apply flex flex-col items-center mx-auto
+  }
+
+  .input_form {
+    @apply border-2 border-black mt-3
+  }
+}
+
 
 
 .fade-in-item {
