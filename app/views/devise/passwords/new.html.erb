@@ -1,15 +1,17 @@
-<h2 class="flex flex-col place-items-center mt-20 font-bold">パスワードの再設定</h2>
+<!--入力フォーム見出し、　コンテナ　入力欄　はapplication.tailwind.cssで管理 -->
 
-<div class="flex flex-col items-center mx-auto">
+<h2 class="form_title">パスワードの再設定</h2>
+
+<div class="input_container">
   <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }, data: { turbo: false }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="container flex flex-col items-center mx-auto">
+  <div class="container input_container">
     <p class="text-sm text-gray-600 mb-5">登録済みのメールアドレスを入力してください。<br>パスワード再設定用のURLをお送りします。</p>
 
     <div class="field mb-5">
       <%= f.label :email, 'メールアドレス' %><br />
-      <%= f.email_field :email, autofocus: true, class: "border-2 border-black mt-3", autocomplete: "email" %>
+      <%= f.email_field :email, autofocus: true, class: "input_form", autocomplete: "email" %>
     </div>
 
     <div class="actions flex items-center gap-4">

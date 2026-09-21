@@ -1,39 +1,38 @@
-<h2  class="flex flex-col place-items-center mt-20 font-bold">アカウント登録</h2>
+<!--入力フォーム見出し、　コンテナ　入力欄　はapplication.tailwind.cssで管理 -->
 
-<div class="flex flex-col items-center mx-auto">
+<h2  class="form_title">アカウント登録</h2>
+
+<div class="input_container">
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
+  <div class="container input_container">
+    <div class="field mb-5 ">
+      <%= f.label :name, 'ユーザーネーム' %><br />
+      <%= f.text_field :name, class: "input_form", autocomplete: "name" %>
+    </div>
 
-<div class="container flex flex-col items-center mx-auto">
-  <div class="field mb-5 ">
-    <%= f.label :name, 'ユーザーネーム' %><br />
-    <%= f.text_field :name, class: "border-2 border-black mt-3 ", autocomplete: "name" %>
+    <div class="field mb-5">
+      <%= f.label :email, 'メールアドレス' %><br />
+      <%= f.email_field :email, class: "input_form" , autocomplete: "email" %>
+    </div>
+
+    <div class="field mb-5">
+      <%= f.label :password, 'パスワード' %><br />
+      <%= f.password_field :password, class: "input_form", autocomplete: "new-password" %>
+    </div>
+
+    <div class="field mb-5">
+      <%= f.label :password_confirmation, 'パスワード再入力' %><br />
+      <%= f.password_field :password_confirmation, class: "input_form", autocomplete: "new-password" %>
+    </div>
+
+    <div class="actions flex items-center">
+      <%= f.submit "登録", class: " py-1 px-3  border-2 border-black rounded cursor-pointer transition duration-150 active:scale-95 active:bg-gray-200"%>
+    </div>
+  <% end %>
+
   </div>
-
-  <div class="field mb-5">
-    <%= f.label :email, 'メールアドレス' %><br />
-    <%= f.email_field :email, class: "border-2 border-black mt-3" , autocomplete: "email" %>
-  </div>
-
-  <div class="field mb-5">
-    <%= f.label :password, 'パスワード' %>
-    <% if @minimum_password_length %>
-    <% end %><br />
-    <%= f.password_field :password, class: "border-2 border-black mt-3", autocomplete: "new-password" %>
-  </div>
-
-  <div class="field mb-5">
-    <%= f.label :password_confirmation, 'パスワード再入力' %><br />
-    <%= f.password_field :password_confirmation, class: "border-2 border-black mt-3", autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions flex items-center">
-    <%= f.submit "登録", class: " py-1 px-3  border-2 border-black rounded cursor-pointer transition duration-150 active:scale-95 active:bg-gray-200"%>
-  </div>
-<% end %>
-
-</div>
 </div>
 
 <div class="flex flex-col items-center mt-4">
