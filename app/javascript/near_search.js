@@ -1,60 +1,39 @@
 let restaurantMarkers = [];
 
-export function searchNearRestaurant(latlng, map) {
-    if (!map) return;
-    clearRestaurantMarkers();
-    
-    const service = new google.maps.places.PlacesService(map);
-    const request = {
-        location: latlng,
-        radius: 2000,
-        type: 'restaurant'
-    };
-
-    service.nearbySearch(request, (results, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            results.forEach(place => createRestaurantMarker(place, map));
-        }
-    });
-}
-
 export function clearRestaurantMarkers() {
     restaurantMarkers.forEach(m => m.setMap(null));
     restaurantMarkers = [];
 }
 
-function createRestaurantMarker(place, map) {
+export async function searchNearRestaurant(latlng, map) {
+    if (!map) return;
+    clearRestaurantMarkers();
+
+    const res = await fetch(`/restaurants?lat=${latlng.lat()}&lng=${latlng.lng()}`);
+    if (!res.ok) return;
+    const restaurants = await res.json();
+    restaurants.forEach(r => createRestaurantMarker(r, map));
+    }
+
+function createRestaurantMarker(restaurant, map) {
     const marker = new google.maps.Marker({
-        position: place.geometry.location,
+        position: { lat: restaurant.lat, lng: restaurant.lng },
         map: map,
         icon: 'http://maps.google.co.jp/mapfiles/ms/icons/orange-dot.png'
     });
     restaurantMarkers.push(marker);
+    marker.addListener('click', () => showInfoWindow(restaurant, marker, map));
+    }
 
-    marker.addListener('click', () => {
-        const service = new google.maps.places.PlacesService(map);
-        service.getDetails({
-            placeId: place.place_id,
-            fields: ['name', 'formatted_address', 'website', 'photos']
-        }, (details, status) => {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                showInfoWindow(details, marker, map);
-            }
-        });
-    });
-}
-
-function showInfoWindow(details, marker, map) {
-    const photoUrl = details.photos ? details.photos[0].getUrl({maxWidth: 200}) : "";
-    const websiteLink = details.website ? `<a href="${details.website}" target="_blank" class="text-sky-600 underline">公式サイト</a>` : "サイトなし";
+function showInfoWindow(restaurant, marker, map) {
     const content = `
         <div class="p-1">
-            <strong class="text-orange-600">${details.name}</strong><br>
-            <span class="text-xs">${details.formatted_address}</span><br>
-            ${websiteLink}<br>
-            ${photoUrl ? `<img src="${photoUrl}" class="mt-2 rounded shadow-sm" style="max-width:180px;">` : ""}
+            <strong class="text-orange-600">${restaurant.name}</strong><br>
+            <span class="text-xs">${restaurant.address}</span><br>
+            <a href="${restaurant.url}" target="_blank" class="text-sky-600 underline">Hotpepperで見る</a><br>
+            <img src="${restaurant.photo_url}" class="mt-2 rounded shadow-sm" style="max-width:180px;">
+            <span class="block text-[10px] text-slate-400 mt-0.5">【画像提供：ホットペッパー グルメ】</span>
         </div>`;
-
     const infoWindow = new google.maps.InfoWindow({ content: content });
     infoWindow.open(map, marker);
 }

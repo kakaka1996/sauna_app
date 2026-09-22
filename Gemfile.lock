@@ -457,6 +457,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   devise-i18n
+  faraday
   geocoder
   google_places
   image_processing (~> 1.2)
