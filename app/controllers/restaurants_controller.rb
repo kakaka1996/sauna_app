@@ -20,7 +20,7 @@ class RestaurantsController < ApplicationController
     end
 
     render json: restaurants
-  rescue Hotpepper::ApiError => e
+  rescue Faraday::Error, JSON::ParserError => e
     render json: { error: e.message }, status: :bad_gateway
   end
 end
