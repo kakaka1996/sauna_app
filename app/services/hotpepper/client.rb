@@ -1,8 +1,7 @@
 module Hotpepper
-  API_URL = 'https://webservice.recruit.co.jp/hotpepper/gourmet/v1/'
+  API_URL = "https://webservice.recruit.co.jp/hotpepper/gourmet/v1/"
 
   class Client
-
     def initialize(api_key)
       @api_key = api_key
     end
@@ -10,7 +9,7 @@ module Hotpepper
     def connection
       @connection ||= Faraday.new(url: API_URL) do |faraday|
         faraday.request :url_encoded
-        faraday.headers['Accept'] = 'application/json'
+        faraday.headers["Accept"] = "application/json"
         faraday.adapter Faraday.default_adapter
       end
     end
@@ -21,7 +20,7 @@ module Hotpepper
     end
 
     def search_restaurant(lat:, lng:, range: 4, count: 20)
-      get( lat: lat, lng: lng, range: range, count: count, format: "json" )
+      get(lat: lat, lng: lng, range: range, count: count, format: "json")
     end
   end
 end

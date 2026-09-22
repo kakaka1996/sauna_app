@@ -53,7 +53,7 @@ gem "thruster", require: false
   gem "omniauth-google-oauth2"
   gem "omniauth-rails_csrf_protection"
 
-  gem 'faraday'
+  gem "faraday"
 
   # カレンダー機能の作成
   gem "simple_calendar"

@@ -3,7 +3,7 @@ class RestaurantsController < ApplicationController
     lat = params[:lat] .to_f
     lng = params[:lng] .to_f
 
-    restaurants = Rails.cache.fetch(["hotpepper_nearby", lat.round(5), lng.round(5)], expires_in: 24.hour) do
+    restaurants = Rails.cache.fetch([ "hotpepper_nearby", lat.round(5), lng.round(5) ], expires_in: 24.hour) do
       client = Hotpepper::Client.new(ENV["HOTPEPPER_API_KEY"])
       response = client.search_restaurant(lat: lat, lng: lng)
       response["results"]["shop"].map do |shop|
@@ -14,7 +14,7 @@ class RestaurantsController < ApplicationController
           address: shop["address"],
           genre: shop["genre"]["name"],
           photo_url: shop["photo"]["mobile"]["l"],
-          url: shop["urls"]["pc"],
+          url: shop["urls"]["pc"]
         }
       end
     end
