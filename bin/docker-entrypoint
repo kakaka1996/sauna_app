@@ -10,6 +10,10 @@ fi
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
 echo "Running database migrations..."
     ./bin/rails db:prepare
+    # primary/cache/queue/cableが同一DATABASE_URLを共有しているため、
+    # db:prepareがschema_migrations既存と誤認しcacheのスキーマ読み込みを
+    # スキップしてしまう。solid_cache_entriesを確実に用意するため明示的に読み込む。
+    ./bin/rails db:schema:load:cache
 fi
 
 exec "${@}"
