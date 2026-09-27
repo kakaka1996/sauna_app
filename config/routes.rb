@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "top#top"
   get "top", to: "top#top"
+  get "map", to: "maps#show"
   get "/terms_of_service", to: "top#terms_of_service"
   get "/privacy_policy", to: "top#privacy_policy"
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
