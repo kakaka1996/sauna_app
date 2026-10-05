@@ -5,6 +5,7 @@ class User < ApplicationRecord
   validates :name, uniqueness: true, presence: true, length: { maximum: 50 }
   devise :database_authenticatable, :registerable,
         :recoverable, :rememberable, :validatable,
+        :lockable,
         :omniauthable, omniauth_providers: [ :google_oauth2 ]
 
   has_many :sauna_logs, dependent: :destroy
