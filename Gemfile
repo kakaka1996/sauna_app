@@ -54,7 +54,7 @@ gem "thruster", require: false
   gem "omniauth-rails_csrf_protection"
 
   gem "faraday"
-
+  gem "dotenv-rails"
   # カレンダー機能の作成
   gem "simple_calendar"
 
